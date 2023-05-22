@@ -24,10 +24,5 @@ public class UserController {
         return loginUser;
     }
 
-    @GetMapping("/captcha/{phone}")
-    @ApiOperation(value = "发送验证码")
-    public String captcha(@PathVariable String phone) {
-        String captcha = userService.captcha(phone);
-        return captcha;
-    }
+
 }
