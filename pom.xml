@@ -17,6 +17,7 @@
 
     <modules>
         <module>chat-common</module>
+        <module>chat-im</module>
     </modules>
 
     <properties>

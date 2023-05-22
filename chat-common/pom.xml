@@ -9,7 +9,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>com.common</groupId>
+    <groupId>com.chat-common</groupId>
     <artifactId>chat-common</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>chat-common</name>
