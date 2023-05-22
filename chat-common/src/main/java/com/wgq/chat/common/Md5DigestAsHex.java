@@ -15,4 +15,13 @@ public class Md5DigestAsHex implements Encrypt {
          */
         return DigestUtils.md5DigestAsHex((SALT + text).getBytes());
     }
+
+    @Override
+    public boolean verify(String unencryptedStr, String encryptStr) {
+        String encrypt = encrypt(unencryptedStr);
+        if (encrypt.equals(encryptStr)){
+            return true;
+        }
+        return false;
+    }
 }

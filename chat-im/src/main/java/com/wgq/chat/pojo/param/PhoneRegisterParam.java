@@ -1,20 +1,17 @@
-package com.wgq.chat.po.param;
+package com.wgq.chat.pojo.param;
 
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class EmailRegisterParam {
-    /**
-     * 邮箱注册入参
-     */
+public class PhoneRegisterParam {
 
-    private String email;
+    private String phone;
     private String password;
     private String userName;
     private String confirmPassword;
     private String captcha;
     private String channel;
+
 
 }

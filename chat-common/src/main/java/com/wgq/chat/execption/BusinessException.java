@@ -1,28 +1,36 @@
 package com.wgq.chat.execption;
 
+import com.wgq.chat.common.ResultCode;
+import com.wgq.chat.common.StatusCode;
+
 public class BusinessException extends Exception {
 
 
+    private Integer code;
+    private String msg;
 
-    private String message;
 
-    public String getMessage() {
-        return message;
+
+    public BusinessException(StatusCode statusCode,String message) {
+        super(message);
+        this.code = statusCode.getCode();
+        this.msg = statusCode.getMsg();
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+
+    public String getMsg() {
+        return msg;
     }
 
-    public String toString() {
-        return message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public static void main(String[] args) {
-        try {
-            throw new Exception();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
     }
 }

@@ -6,7 +6,7 @@
 <mapper namespace="com.wgq.chat.mapper.UserMapper">
 
     <!-- 邮箱注册用户 -->
-    <insert id="addUser" parameterType="com.wgq.chat.po.entity.User">
+    <insert id="addUser" parameterType="com.wgq.chat.pojo.po.User">
         insert into user(user_name,email,passWord,channel)
         values (#{userName},#{email},#{passWord},#{channel})
     </insert>
@@ -18,8 +18,11 @@
     <select id="existUserName" resultType="java.lang.Boolean">
         select id from user where user_name=#{userName}
     </select>
-    <select id="getUserByUserName" resultType="com.wgq.chat.po.entity.User">
+    <select id="getUserByUserName" resultType="com.wgq.chat.pojo.po.User">
         select  id,user_name,password from user where user_name=#{userName}
+    </select>
+    <select id="existMobile" resultType="java.lang.Boolean">
+        select id from user where mobile=#{phone}
     </select>
 
 

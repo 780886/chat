@@ -8,4 +8,5 @@ public class StringUtils {
     public static boolean isNullOrEmpty(Object str) {
         return str == null || "".equals(str.toString().trim());
     }
+
 }

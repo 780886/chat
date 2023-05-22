@@ -1,6 +1,6 @@
 package com.wgq.chat.common;
 
-public enum BusinessCodeEnum implements ResultCode{
+public enum BusinessCodeEnum implements StatusCode {
 
 
     USER_NAME_EXIST(1001, "User name exist"),
@@ -20,7 +20,7 @@ public enum BusinessCodeEnum implements ResultCode{
     }
 
 
-    public String getMessage() {
+    public String getMsg() {
         return this.message;
     }
 }

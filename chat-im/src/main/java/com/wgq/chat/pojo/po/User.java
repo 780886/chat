@@ -1,4 +1,4 @@
-package com.wgq.chat.po.entity;
+package com.wgq.chat.pojo.po;
 
 
 import lombok.Data;

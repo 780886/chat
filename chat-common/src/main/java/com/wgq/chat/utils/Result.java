@@ -2,6 +2,7 @@ package com.wgq.chat.utils;
 
 
 import com.wgq.chat.common.ResultCode;
+import com.wgq.chat.common.StatusCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,17 +23,23 @@ public class Result<T> {
 
 
 
+
     public static <T> Result<T> success(){
         Result<T> result = new Result<>();
-        result.setData(null);
         result.setSuccess(Boolean.TRUE);
+        result.setCode(ResultCode.SUCCESS.getCode());
+        result.setMessage(ResultCode.SUCCESS.getMsg());
+        result.setData(null);
         return result;
     }
 
     public static <T> Result<T> success(T data){
         Result<T> result = new Result<>();
-        result.setData(data);
         result.setSuccess(Boolean.TRUE);
+        result.setCode(ResultCode.SUCCESS.getCode());
+        result.setMessage(ResultCode.SUCCESS.getMsg());
+        result.setData(data);
+
         return result;
     }
     public static <T> Result<T> fail(Integer code, String message) {
@@ -43,15 +50,12 @@ public class Result<T> {
         return result;
     }
 
-    public static <T> Result<T> fail(ResultCode resultCode) {
+    public static <T> Result<T> fail(StatusCode statusCode) {
         Result<T> result = new Result<>();
         result.setSuccess(Boolean.FALSE);
-        result.setCode(resultCode.getCode());
-        result.setMessage(resultCode.getMessage());
+        result.setCode(statusCode.getCode());
+        result.setMessage(statusCode.getMsg());
         return result;
     }
 
-    public boolean isSuccess() {
-        return this.success;
-    }
 }

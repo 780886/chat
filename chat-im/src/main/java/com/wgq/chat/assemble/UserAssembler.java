@@ -1,10 +1,9 @@
 package com.wgq.chat.assemble;
 
 import com.wgq.chat.common.Encrypt;
-import com.wgq.chat.common.Md5DigestAsHex;
-import com.wgq.chat.po.entity.User;
-import com.wgq.chat.po.param.EmailRegisterParam;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wgq.chat.pojo.param.PhoneRegisterParam;
+import com.wgq.chat.pojo.po.User;
+import com.wgq.chat.pojo.param.EmailRegisterParam;
 
 public class UserAssembler {
 
@@ -16,6 +15,16 @@ public class UserAssembler {
         user.setPassword(encryptPassword);
         user.setUserName(emailRegisterParam.getUserName());
         user.setChannel(emailRegisterParam.getChannel());
+        return user;
+    }
+
+    public static User assembleUser(PhoneRegisterParam phoneRegisterParam, Encrypt encrypt) {
+        User user = new User();
+        user.setMobile(phoneRegisterParam.getPhone());
+        String encryptPassword = encrypt.encrypt(phoneRegisterParam.getPassword());
+        user.setPassword(encryptPassword);
+        user.setUserName(phoneRegisterParam.getUserName());
+        user.setChannel(phoneRegisterParam.getChannel());
         return user;
     }
 

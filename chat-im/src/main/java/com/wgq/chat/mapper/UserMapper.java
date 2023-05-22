@@ -1,7 +1,6 @@
 package com.wgq.chat.mapper;
 
-import com.wgq.chat.po.entity.User;
-import org.apache.ibatis.annotations.Mapper;
+import com.wgq.chat.pojo.po.User;
 
 
 public interface UserMapper {
@@ -14,4 +13,6 @@ public interface UserMapper {
     boolean existUserName(String userName);
 
     User getUserByUserName(String userName);
+
+    boolean existMobile(String phone);
 }
