@@ -1,4 +1,4 @@
-package com.wgq.chat.pojo.query;
+package com.wgq.chat.po.query;
 
 import lombok.Data;
 

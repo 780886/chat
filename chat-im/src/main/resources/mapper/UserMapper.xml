@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 引入配置文件 -->
+<mapper namespace="com.wgq.chat.mapper.UserMapper">
+
+    <!-- 邮箱注册用户 -->
+    <insert id="addUser" parameterType="com.wgq.chat.po.entity.User">
+        insert into user(user_name,email,passWord,channel)
+        values (#{userName},#{email},#{passWord},#{channel})
+    </insert>
+
+    <select id="existEmail" resultType="java.lang.Boolean">
+        select id from user where email=#{email}
+    </select>
+
+    <select id="existUserName" resultType="java.lang.Boolean">
+        select id from user where user_name=#{userName}
+    </select>
+
+
+</mapper>

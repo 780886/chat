@@ -1,4 +1,4 @@
-package com.wgq.chat.pojo.dto;
+package com.wgq.chat.po.dto;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

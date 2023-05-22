@@ -1,7 +1,7 @@
 package com.wgq.chat.utils;
 
 
-import com.wgq.chat.execption.ResultCode;
+import com.wgq.chat.common.ResultCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -47,7 +47,7 @@ public class Result<T> {
         Result<T> result = new Result<>();
         result.setSuccess(Boolean.FALSE);
         result.setCode(resultCode.getCode());
-        result.setMessage(resultCode.getMsg());
+        result.setMessage(resultCode.getMessage());
         return result;
     }
 

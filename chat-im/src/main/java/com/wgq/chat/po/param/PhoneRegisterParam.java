@@ -1,14 +1,15 @@
-package com.wgq.chat.pojo.param;
+package com.wgq.chat.po.param;
 
 
 import lombok.Data;
 
 @Data
 public class PhoneRegisterParam {
+
     private String phone;
-    private String passWord;
-    private String UserName;
-    private String confirmPassWord;
+    private String password;
+    private String userName;
+    private String confirmPassword;
     private String captcha;
     private String channel;
 

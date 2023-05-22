@@ -1,21 +1,20 @@
 package com.wgq.chat.controller;
 
-import com.wgq.chat.pojo.LoginToken;
-import com.wgq.chat.pojo.param.EmailRegisterParam;
-import com.wgq.chat.pojo.query.UserLoginQuery;
+import com.wgq.chat.po.param.EmailRegisterParam;
 import com.wgq.chat.service.UserService;
-import com.wgq.chat.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 @RestController
 @RequestMapping("register")
 public class RegisterController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
     @PostMapping("/email-register")
@@ -24,9 +23,4 @@ public class RegisterController {
         return token;
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody UserLoginQuery loginQuery) {
-        String token =  userService.login(loginQuery);
-        return token;
-    }
 }

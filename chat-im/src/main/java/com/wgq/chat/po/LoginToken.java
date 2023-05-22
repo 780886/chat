@@ -1,4 +1,4 @@
-package com.wgq.chat.pojo;
+package com.wgq.chat.po;
 
 public class LoginToken {
     private  String  token;
