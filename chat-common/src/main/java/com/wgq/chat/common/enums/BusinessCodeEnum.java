@@ -1,4 +1,4 @@
-package com.wgq.chat.common;
+package com.wgq.chat.common.enums;
 
 public enum BusinessCodeEnum implements StatusCode {
 

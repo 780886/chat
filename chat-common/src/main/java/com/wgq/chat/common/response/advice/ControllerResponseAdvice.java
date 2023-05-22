@@ -1,6 +1,7 @@
-package com.wgq.chat.common;
+package com.wgq.chat.common.response.advice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wgq.chat.common.enums.ResultCode;
 import com.wgq.chat.execption.BusinessException;
 import com.wgq.chat.utils.Result;
 import lombok.SneakyThrows;

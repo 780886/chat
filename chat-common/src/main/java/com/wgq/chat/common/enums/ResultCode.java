@@ -1,6 +1,6 @@
-package com.wgq.chat.common;
+package com.wgq.chat.common.enums;
 
-public enum ResultCode implements StatusCode{
+public enum ResultCode implements StatusCode {
 
     SUCCESS(1000, "请求成功"),
     FAILED(1001, "请求失败"),

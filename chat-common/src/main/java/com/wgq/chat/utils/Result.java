@@ -1,8 +1,8 @@
 package com.wgq.chat.utils;
 
 
-import com.wgq.chat.common.ResultCode;
-import com.wgq.chat.common.StatusCode;
+import com.wgq.chat.common.enums.ResultCode;
+import com.wgq.chat.common.enums.StatusCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

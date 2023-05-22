@@ -1,7 +1,6 @@
 package com.wgq.chat.execption;
 
-import com.wgq.chat.common.ResultCode;
-import com.wgq.chat.common.StatusCode;
+import com.wgq.chat.common.enums.StatusCode;
 
 public class BusinessException extends Exception {
 

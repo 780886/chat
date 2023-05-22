@@ -1,4 +1,4 @@
-package com.wgq.chat.common;
+package com.wgq.chat.common.response.advice;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
