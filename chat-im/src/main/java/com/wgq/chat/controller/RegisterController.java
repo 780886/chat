@@ -22,14 +22,14 @@ public class RegisterController {
     private UserService userService;
 
     @PostMapping("/email-register")
-    @ApiOperation(value = "邮箱注册")
+    @ApiOperation(value = "邮箱注册用户")
     public LoginToken emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) {
         LoginToken loginToken = userService.emailRegister(emailRegisterParam);
         return loginToken;
     }
 
     @PostMapping("/phone-register")
-    @ApiOperation(value = "邮箱注册")
+    @ApiOperation(value = "手机号注册用户")
     public LoginToken phoneRegister(@RequestBody PhoneRegisterParam phoneRegisterParam) {
         LoginToken loginToken = userService.phoneRegister(phoneRegisterParam);
         return loginToken;
