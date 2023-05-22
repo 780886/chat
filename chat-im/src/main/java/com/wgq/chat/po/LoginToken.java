@@ -1,6 +1,7 @@
 package com.wgq.chat.po;
 
 public class LoginToken {
+
     private  String  token;
 
     public LoginToken(String token) {

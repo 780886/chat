@@ -1,8 +1,11 @@
 package com.wgq.chat.po.dto;
 
+import lombok.Data;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@Data
 public class LoginUser {
 
     /**

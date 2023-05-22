@@ -1,5 +1,6 @@
 package com.wgq.chat.controller;
 
+import com.wgq.chat.po.dto.LoginUser;
 import com.wgq.chat.po.query.UserLoginQuery;
 import com.wgq.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public String login(@RequestBody UserLoginQuery loginQuery) {
-        String token =  userService.login(loginQuery);
-        return token;
+    public LoginUser login(@RequestBody UserLoginQuery loginQuery) {
+        LoginUser loginUser =  userService.login(loginQuery);
+        return loginUser;
     }
 }

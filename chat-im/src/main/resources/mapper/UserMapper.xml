@@ -18,6 +18,9 @@
     <select id="existUserName" resultType="java.lang.Boolean">
         select id from user where user_name=#{userName}
     </select>
+    <select id="getUserByUserName" resultType="com.wgq.chat.po.entity.User">
+        select  id,user_name,password from user where user_name=#{userName}
+    </select>
 
 
 </mapper>

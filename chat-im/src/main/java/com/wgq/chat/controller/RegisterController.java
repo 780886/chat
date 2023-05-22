@@ -1,5 +1,6 @@
 package com.wgq.chat.controller;
 
+import com.wgq.chat.po.LoginToken;
 import com.wgq.chat.po.param.EmailRegisterParam;
 import com.wgq.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ public class RegisterController {
     private UserService userService;
 
     @PostMapping("/email-register")
-    public String emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) {
-        String token = userService.emailRegister(emailRegisterParam);
-        return token;
+    public LoginToken emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) {
+        LoginToken loginToken = userService.emailRegister(emailRegisterParam);
+        return loginToken;
     }
 
 }

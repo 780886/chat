@@ -12,4 +12,6 @@ public interface UserMapper {
     boolean existEmail(String email);
 
     boolean existUserName(String userName);
+
+    User getUserByUserName(String userName);
 }

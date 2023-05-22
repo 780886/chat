@@ -8,7 +8,7 @@ public class UserLoginQuery {
     private  String userName ;
     private  String phone ;
     private  String email ;
-    private  String passWord ;
+    private  String password ;
 
 
 
