@@ -27,6 +27,7 @@
         <lombok.version>1.18.10</lombok.version>
         <jjwt.version>0.9.1</jjwt.version>
         <hutool.version>5.8.18</hutool.version>
+        <mybatis-spring-boot-starter.version>2.2.0</mybatis-spring-boot-starter.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -44,6 +45,11 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot-starter.version}</version>
             </dependency>
             <!--Mysql数据库驱动-->
             <dependency>
