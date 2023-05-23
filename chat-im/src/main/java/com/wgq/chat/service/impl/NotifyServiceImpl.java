@@ -9,6 +9,7 @@ import com.wgq.chat.execption.BusinessException;
 import com.wgq.chat.pojo.LoginToken;
 import com.wgq.chat.pojo.param.EmailRegisterParam;
 import com.wgq.chat.pojo.param.PhoneRegisterParam;
+import com.wgq.chat.pojo.param.SendCodeParam;
 import com.wgq.chat.service.NotifyService;
 import com.wgq.chat.utils.CaptchaUtil;
 import com.wgq.chat.utils.RedisUtils;
@@ -64,13 +65,16 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    public String sendCode(String captchaKey,String phone,String captcha) throws BusinessException {
+    public String sendCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException {
         String redisCaptcha = redisUtils.get(captchaKey);
+        Assert.isTrue(sendCodeParam != null, "参数不能为空,请重新发送验证码");
+        Assert.isTrue(sendCodeParam.getCaptcha() != null, "验证码不能为空");
+        Assert.isTrue(sendCodeParam.getPhone()!= null, "手机号不能为空");
         Assert.isTrue(redisCaptcha != null,"验证码已过期,请重新获取!");
-        Assert.isTrue(captcha.equals(redisCaptcha),"验证码不正确,请重新输入!");
+        Assert.isTrue(sendCodeParam.getCaptcha().equals(redisCaptcha),"验证码不正确,请重新输入!");
         //判断验证码是否相等
         //1、接口防刷
-        String key = RedisKey.getKey(RedisKey.SMS_CODE_CACHE_PREFIX, phone);
+        String key = RedisKey.getKey(RedisKey.SMS_CODE_CACHE_PREFIX, sendCodeParam.getPhone());
         String redisCode = redisUtils.get(key);
         if (StringUtils.isNullOrEmpty(redisCode)) {
             throw new BusinessException(BizCodeEnum.SMS_CODE_NOT_EXIST);
@@ -89,7 +93,7 @@ public class NotifyServiceImpl implements NotifyService {
 
         //存入redis，防止同一个手机号在60秒内再次发送验证码
         redisUtils.set(key, redisStorage, ExpirationTimeConstants.TEN_MINUTES, TimeUnit.SECONDS);
-        log.info("发送验证码成功,手机号为:{},验证码为:{}",phone,code);
+        log.info("发送验证码成功,手机号为:{},验证码为:{}",sendCodeParam.getPhone(),code);
         return code;
     }
 

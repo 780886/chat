@@ -5,6 +5,7 @@ import com.wgq.chat.common.Encrypt;
 import com.wgq.chat.common.Md5DigestAsHex;
 import com.wgq.chat.common.constant.ExpirationTimeConstants;
 import com.wgq.chat.execption.BusinessException;
+import com.wgq.chat.pojo.param.SendCodeParam;
 import com.wgq.chat.service.NotifyService;
 import com.wgq.chat.service.UserService;
 import com.wgq.chat.utils.CaptchaUtil;
@@ -13,10 +14,7 @@ import com.wgq.chat.utils.RedisUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -41,18 +39,18 @@ public class NotifyController {
     private Md5DigestAsHex md5DigestAsHex;
 
 
-    @ApiOperation("获取图形验证码")
     @GetMapping("/captcha")
+    @ApiOperation("获取图形验证码")
     public void getCaptcha(HttpServletRequest request, HttpServletResponse response) {
         notifyService.captcha(request,response);
     }
 
 
-    @GetMapping("/send-code/{phone}/{captcha}")
+    @GetMapping("/send-code")
     @ApiOperation(value = "发送手机验证码")
-    public String sendCode(HttpServletRequest request,@PathVariable String phone,@PathVariable String captcha) throws BusinessException {
+    public String sendCode(HttpServletRequest request,@RequestBody SendCodeParam sendCodeParam) throws BusinessException {
         String captchaKey = CaptchaUtil.getCaptchaKey(request,md5DigestAsHex);
-        String code = notifyService.sendCode(captchaKey,phone,captcha);
+        String code = notifyService.sendCode(captchaKey,sendCodeParam);
         return code;
     }
 }
