@@ -15,6 +15,10 @@ public class GlobalExceptionHandler {
         return Result.fail(e.getCode(),e.getMsg());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Result<Object> IllegalArgumentExceptionHandler(IllegalArgumentException e){
+        return Result.fail(ResultCode.FAILED.getCode(),e.getMessage());
+    }
 
     @ExceptionHandler(Exception.class)
     public Result<Object> ExceptionHandler(Exception e){
