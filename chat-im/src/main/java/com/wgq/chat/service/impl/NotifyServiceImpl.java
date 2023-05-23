@@ -46,10 +46,9 @@ public class NotifyServiceImpl implements NotifyService {
     public void captcha(HttpServletRequest request, HttpServletResponse response) {
         String cacheKey = CaptchaUtil.getCaptchaKey(request,md5DigestAsHex);
         String capText = captchaProducer.createText();
-        // 存储
         redisUtils.set(cacheKey, capText, ExpirationTimeConstants.ONE_MINUTES, TimeUnit.SECONDS);
         BufferedImage bi = captchaProducer.createImage(capText);
-        ServletOutputStream out;
+        ServletOutputStream out = null;
         try {
             response.setDateHeader("Expires", 0);
             response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -58,9 +57,16 @@ public class NotifyServiceImpl implements NotifyService {
             out = response.getOutputStream();
             ImageIO.write(bi, "jpg", out);
             out.flush();
-            out.close();
         } catch (IOException e) {
             log.error("获取验证码失败:{}", e.getMessage());
+        }finally {
+            if (out != null){
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -76,21 +82,14 @@ public class NotifyServiceImpl implements NotifyService {
         //1、接口防刷
         String key = RedisKey.getKey(RedisKey.SMS_CODE_CACHE_PREFIX, sendCodeParam.getPhone());
         String redisCode = redisUtils.get(key);
-        if (StringUtils.isNullOrEmpty(redisCode)) {
-            throw new BusinessException(BizCodeEnum.SMS_CODE_NOT_EXIST);
-        }
-
+        Assert.isTrue(redisCode != null,BizCodeEnum.SMS_CODE_NOT_EXIST.getMsg());
         //活动存入redis的时间，用当前时间减去存入redis的时间，判断用户手机号是否在60s内发送验证码
         long currentTime = Long.parseLong(redisCode.split("_")[1]);
-        if (System.currentTimeMillis() - currentTime < 60000) {
-            //60s内不能再发
-            throw new BusinessException(BizCodeEnum.SMS_CODE_ERROR);
-        }
-
+        //60s内不能再发
+        Assert.isTrue(System.currentTimeMillis() - currentTime > 60 ,"验证码获取频率太高，稍后再试");
         //2、redis.存key-phone,value-code
         String code = VerificationCodeUtil.generateVerificationCode();
         String redisStorage = code + "_" + System.currentTimeMillis();
-
         //存入redis，防止同一个手机号在60秒内再次发送验证码
         redisUtils.set(key, redisStorage, ExpirationTimeConstants.TEN_MINUTES, TimeUnit.SECONDS);
         log.info("发送验证码成功,手机号为:{},验证码为:{}",sendCodeParam.getPhone(),code);
