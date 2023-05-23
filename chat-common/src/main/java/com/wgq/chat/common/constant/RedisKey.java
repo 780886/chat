@@ -25,7 +25,8 @@ public class RedisKey {
     public static final String SMS_CODE_CACHE_PREFIX = "sms:code:";
 
     public static String getKey(String key, Object... objects) {
-        return BASE_KEY + String.format(key, objects);
+        String format = String.format(key, objects);
+        return BASE_KEY + format;
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.Date;
 public class JwtUtil {
 
     // 签名密钥
-    private static final String SECRET_KEY = "cereshuzhitingnizhenbangcereshuzhitingnizhenbang";
+    private static final String SECRET_KEY = "ewafda";
 
     // 过期时间（30分钟）
     private static final long EXPIRATION_TIME = 30 * 60 * 1000;

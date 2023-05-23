@@ -46,6 +46,7 @@ public class NotifyServiceImpl implements NotifyService {
     public void captcha(HttpServletRequest request, HttpServletResponse response) {
         String cacheKey = CaptchaUtil.getCaptchaKey(request,md5DigestAsHex);
         String capText = captchaProducer.createText();
+        log.info("验证码生成完毕，回显到屏幕上:{}",capText);
         redisUtils.set(cacheKey, capText, ExpirationTimeConstants.ONE_MINUTES, TimeUnit.SECONDS);
         BufferedImage bi = captchaProducer.createImage(capText);
         ServletOutputStream out = null;
@@ -73,20 +74,24 @@ public class NotifyServiceImpl implements NotifyService {
     @Override
     public String sendCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException {
         String redisCaptcha = redisUtils.get(captchaKey);
+        redisUtils.setRemove(captchaKey,redisCaptcha);
         Assert.isTrue(sendCodeParam != null, "参数不能为空,请重新发送验证码");
         Assert.isTrue(sendCodeParam.getCaptcha() != null, "验证码不能为空");
         Assert.isTrue(sendCodeParam.getPhone()!= null, "手机号不能为空");
         Assert.isTrue(redisCaptcha != null,"验证码已过期,请重新获取!");
-        Assert.isTrue(sendCodeParam.getCaptcha().equals(redisCaptcha),"验证码不正确,请重新输入!");
+        Assert.isTrue(!sendCodeParam.getCaptcha().equals(redisCaptcha),"验证码不正确,请重新输入!");
         //判断验证码是否相等
         //1、接口防刷
         String key = RedisKey.getKey(RedisKey.SMS_CODE_CACHE_PREFIX, sendCodeParam.getPhone());
         String redisCode = redisUtils.get(key);
-        Assert.isTrue(redisCode != null,BizCodeEnum.SMS_CODE_NOT_EXIST.getMsg());
-        //活动存入redis的时间，用当前时间减去存入redis的时间，判断用户手机号是否在60s内发送验证码
-        long currentTime = Long.parseLong(redisCode.split("_")[1]);
-        //60s内不能再发
-        Assert.isTrue(System.currentTimeMillis() - currentTime > 60 ,"验证码获取频率太高，稍后再试");
+        if (!StringUtils.isNullOrEmpty(redisCode)){
+            //活动存入redis的时间，用当前时间减去存入redis的时间，判断用户手机号是否在60s内发送验证码
+            String[] split = redisCode.split("_");
+            long currentTime = Long.parseLong(split[1]);
+            if (System.currentTimeMillis() - currentTime < 60000){
+                throw new BusinessException(BizCodeEnum.SMS_CODE_ERROR);
+            }
+        }
         //2、redis.存key-phone,value-code
         String code = VerificationCodeUtil.generateVerificationCode();
         String redisStorage = code + "_" + System.currentTimeMillis();
