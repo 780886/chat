@@ -9,10 +9,6 @@ import com.wgq.chat.pojo.query.UserLoginQuery;
 
 public interface UserService {
 
-
-    LoginUser login(UserLoginQuery loginQuery);
-
-
     boolean existEmail(String email);
 
     boolean existUserName(String userName);
@@ -20,4 +16,6 @@ public interface UserService {
     int addUser(User user);
 
     boolean existMobile(String phone);
+
+    User getUserByUserName(String userName);
 }

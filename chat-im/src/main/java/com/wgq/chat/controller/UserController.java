@@ -14,15 +14,8 @@ import javax.annotation.Resource;
 @Api(value = "用户相关接口")
 public class UserController {
 
-    @Resource
-    private UserService userService;
 
-    @PostMapping("/login")
-    @ApiOperation(value = "登录")
-    public LoginUser login(@RequestBody UserLoginQuery loginQuery) {
-        LoginUser loginUser =  userService.login(loginQuery);
-        return loginUser;
-    }
+
 
 
 }

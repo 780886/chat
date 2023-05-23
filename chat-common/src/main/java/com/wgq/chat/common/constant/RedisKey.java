@@ -22,6 +22,8 @@ public class RedisKey {
     // 短信验证码前缀
     public static final String LOGIN_PHONE_PREFIX = "login:phone:";
 
+    public static final String SMS_CODE_CACHE_PREFIX = "sms:code:";
+
     public static String getKey(String key, Object... objects) {
         return BASE_KEY + String.format(key, objects);
     }

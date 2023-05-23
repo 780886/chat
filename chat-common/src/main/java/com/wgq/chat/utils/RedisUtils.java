@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Slf4j
 //@Component
 public class RedisUtils {
+
     public RedisTemplate redisTemplate;
 
     private static StringRedisTemplate stringRedisTemplate;

@@ -14,6 +14,10 @@ public class BusinessException extends Exception {
         this.msg = statusCode.getMsg();
     }
 
+    public BusinessException(StatusCode statusCode) {
+        super(statusCode.getMsg());
+        this.code = statusCode.getCode();
+    }
 
     public String getMsg() {
         return msg;
