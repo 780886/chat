@@ -8,7 +8,8 @@ public class BusinessException extends Exception {
     private Integer code;
     private String msg;
 
-    public BusinessException(StatusCode statusCode,String message) {
+
+    public BusinessException(StatusCode statusCode, String message) {
         super(message);
         this.code = statusCode.getCode();
         this.msg = statusCode.getMsg();
@@ -17,6 +18,7 @@ public class BusinessException extends Exception {
     public BusinessException(StatusCode statusCode) {
         super(statusCode.getMsg());
         this.code = statusCode.getCode();
+        this.msg = statusCode.getMsg();
     }
 
     public String getMsg() {
