@@ -40,7 +40,7 @@ public class RegisterServiceImpl implements RegisterService {
         String captcha = emailRegisterParam.getCaptcha();
         Assert.isTrue(StringUtils.isAnyBlank(userName,email,password,confirmPassword,channel),"请求参数不完整,请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkEmail(email),"邮箱格式错误，请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkUsername(userName),"用户名格式不合法：只能包含字母、数字、下划线!");
+        Assert.isTrue(FormatCheckUtil.checkUsername(userName),"用户名格式错误,请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkPassword(password),"密码格式错误，请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkPassword(confirmPassword),"密码格式错误，请重新输入!");
         Assert.isTrue(password.equals(confirmPassword),"两次输入的密码不一致,请重新输入!");
@@ -64,7 +64,7 @@ public class RegisterServiceImpl implements RegisterService {
         String captcha = phoneRegisterParam.getCaptcha();
         Assert.isTrue(StringUtils.isAnyBlank(userName,phone,password,confirmPassword,channel),"请求参数不完整,请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkMobile(phone),"手机号格式错误，请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkUsername(userName),"用户名格式不合法：只能包含字母、数字、下划线!");
+        Assert.isTrue(FormatCheckUtil.checkUsername(userName),"用户名格式错误,请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkPassword(password),"密码格式错误，请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkPassword(confirmPassword),"密码格式错误，请重新输入!");
         Assert.isTrue(password.equals(confirmPassword),"两次输入的密码不一致,请重新输入!");
