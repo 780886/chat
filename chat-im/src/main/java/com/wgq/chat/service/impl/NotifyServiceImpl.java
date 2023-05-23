@@ -14,18 +14,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
 public class NotifyServiceImpl implements NotifyService {
 
+    @Resource
+    private RedisUtils redisUtils;
+
 
     @Override
     public String captcha(String phone) {
         String code = VerificationCodeUtil.generateVerificationCode();
         String key = RedisKey.getKey(RedisKey.LOGIN_PHONE_PREFIX, phone);
-        RedisUtils.set(key,code, ExpirationTimeConstants.THIRTY_MINUTES, TimeUnit.SECONDS);
+        redisUtils.set(key,code, ExpirationTimeConstants.THIRTY_MINUTES, TimeUnit.SECONDS);
         return code;
     }
 
@@ -48,7 +52,7 @@ public class NotifyServiceImpl implements NotifyService {
         String redisStorage = codeNum + "_" + System.currentTimeMillis();
 //
         //存入redis，防止同一个手机号在60秒内再次发送验证码
-        RedisUtils.set(key, redisStorage, ExpirationTimeConstants.TEN_MINUTES, TimeUnit.SECONDS);
+        redisUtils.set(key, redisStorage, ExpirationTimeConstants.TEN_MINUTES, TimeUnit.SECONDS);
         log.info("发送验证码成功,手机号为:{},验证码为:{}",phone,codeNum);
         return codeNum;
     }

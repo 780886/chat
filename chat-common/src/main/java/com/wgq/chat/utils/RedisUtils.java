@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 
 @Slf4j
-//@Component
+@Component
 public class RedisUtils {
 
     public RedisTemplate redisTemplate;
@@ -294,7 +294,7 @@ public class RedisUtils {
      * @param timeUnit 类型
      * @return true成功 false 失败
      */
-    public static boolean set(String key, Object value, long time, TimeUnit timeUnit) {
+    public  boolean set(String key, Object value, long time, TimeUnit timeUnit) {
         try {
             if (time > 0) {
                 stringRedisTemplate.opsForValue().set(key, objToStr(value), time, timeUnit);
