@@ -3,6 +3,8 @@ package com.wgq.chat.controller;
 import com.wgq.chat.pojo.LoginToken;
 import com.wgq.chat.pojo.param.EmailRegisterParam;
 import com.wgq.chat.pojo.param.PhoneRegisterParam;
+import com.wgq.chat.service.NotifyService;
+import com.wgq.chat.service.RegisterService;
 import com.wgq.chat.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,19 +21,19 @@ import javax.annotation.Resource;
 public class RegisterController {
 
     @Resource
-    private UserService userService;
+    private RegisterService registerService;
 
     @PostMapping("/email-register")
     @ApiOperation(value = "邮箱注册用户")
     public LoginToken emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) {
-        LoginToken loginToken = userService.emailRegister(emailRegisterParam);
+        LoginToken loginToken = registerService.emailRegister(emailRegisterParam);
         return loginToken;
     }
 
     @PostMapping("/phone-register")
     @ApiOperation(value = "手机号注册用户")
     public LoginToken phoneRegister(@RequestBody PhoneRegisterParam phoneRegisterParam) {
-        LoginToken loginToken = userService.phoneRegister(phoneRegisterParam);
+        LoginToken loginToken = registerService.phoneRegister(phoneRegisterParam);
         return loginToken;
     }
 

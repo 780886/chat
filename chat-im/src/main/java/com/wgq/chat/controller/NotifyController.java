@@ -1,5 +1,6 @@
 package com.wgq.chat.controller;
 
+import com.wgq.chat.service.NotifyService;
 import com.wgq.chat.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +15,12 @@ import javax.annotation.Resource;
 public class NotifyController {
 
     @Resource
-    private UserService userService;
+    private NotifyService notifyService;
 
     @GetMapping("/captcha/{phone}")
     @ApiOperation(value = "发送验证码")
     public String captcha(@PathVariable String phone) {
-        String captcha = userService.captcha(phone);
+        String captcha = notifyService.captcha(phone);
         return captcha;
     }
 }
