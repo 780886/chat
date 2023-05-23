@@ -74,7 +74,7 @@ public class NotifyServiceImpl implements NotifyService {
     @Override
     public String sendCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException {
         String redisCaptcha = redisUtils.get(captchaKey);
-        redisUtils.setRemove(captchaKey,redisCaptcha);
+        redisUtils.del(captchaKey);
         Assert.isTrue(sendCodeParam != null, "参数不能为空,请重新发送验证码");
         Assert.isTrue(sendCodeParam.getCaptcha() != null, "验证码不能为空");
         Assert.isTrue(sendCodeParam.getPhone()!= null, "手机号不能为空");
@@ -82,8 +82,7 @@ public class NotifyServiceImpl implements NotifyService {
         Assert.isTrue(!sendCodeParam.getCaptcha().equals(redisCaptcha),"验证码不正确,请重新输入!");
         //判断验证码是否相等
         //1、接口防刷
-        String key = RedisKey.getKey(RedisKey.SMS_CODE_CACHE_PREFIX, sendCodeParam.getPhone());
-        String redisCode = redisUtils.get(key);
+        String redisCode = redisUtils.get(RedisKey.SMS_CODE_CACHE_PREFIX+sendCodeParam.getPhone());
         if (!StringUtils.isNullOrEmpty(redisCode)){
             //活动存入redis的时间，用当前时间减去存入redis的时间，判断用户手机号是否在60s内发送验证码
             String[] split = redisCode.split("_");
@@ -96,7 +95,7 @@ public class NotifyServiceImpl implements NotifyService {
         String code = VerificationCodeUtil.generateVerificationCode();
         String redisStorage = code + "_" + System.currentTimeMillis();
         //存入redis，防止同一个手机号在60秒内再次发送验证码
-        redisUtils.set(key, redisStorage, ExpirationTimeConstants.TEN_MINUTES, TimeUnit.SECONDS);
+        redisUtils.set(RedisKey.SMS_CODE_CACHE_PREFIX+sendCodeParam.getPhone(), redisStorage, ExpirationTimeConstants.ONE_MINUTES, TimeUnit.SECONDS);
         log.info("发送验证码成功,手机号为:{},验证码为:{}",sendCodeParam.getPhone(),code);
         return code;
     }

@@ -19,4 +19,4 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
   level:
-    com.wgq.chat.*: info
+    com.wgq.chat: info
