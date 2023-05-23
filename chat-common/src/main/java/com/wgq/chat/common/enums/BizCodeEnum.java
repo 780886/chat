@@ -4,6 +4,7 @@ package com.wgq.chat.common.enums;
 public enum BizCodeEnum implements StatusCode {
     UN_KNOW_ERROR(10000,"系统未知异常"),
     VALID_ERROR(10001,"参数格式检验失败"),
+    RESPONSE_PACK_ERROR(1004, "response返回包装失败"),
     TO_MANY_REQUEST(10002,"请求流量过大，请稍后再试"),
     SMS_CODE_ERROR(10003,"验证码获取频率太高，稍后再试!"),
     SMS_CODE_NOT_EXIST(10004,"验证码未过期或已过期，请检查次数或验证码"),

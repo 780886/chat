@@ -49,7 +49,7 @@ public class NotifyServiceImpl implements NotifyService {
             throw new BusinessException(BizCodeEnum.SMS_CODE_ERROR);
         }
 
-        //2、验证码的再次效验 redis.存key-phone,value-code
+        //2、redis.存key-phone,value-code
         int code = (int) ((Math.random() * 9 + 1) * 100000);
         String codeNum = String.valueOf(code);
         String redisStorage = codeNum + "_" + System.currentTimeMillis();

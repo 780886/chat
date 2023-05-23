@@ -1,6 +1,7 @@
 package com.wgq.chat.common.response.advice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wgq.chat.common.enums.BizCodeEnum;
 import com.wgq.chat.common.enums.ResultCode;
 import com.wgq.chat.execption.BusinessException;
 import com.wgq.chat.utils.Result;
@@ -29,7 +30,7 @@ public class ControllerResponseAdvice implements ResponseBodyAdvice<Object> {
             try {
                 return objectMapper.writeValueAsString(Result.success(data));
             }catch (Exception e) {
-                throw new BusinessException(ResultCode.RESPONSE_PACK_ERROR,e.getMessage());
+                throw new BusinessException(BizCodeEnum.RESPONSE_PACK_ERROR,e.getMessage());
             }
         }
         return Result.success(data);
