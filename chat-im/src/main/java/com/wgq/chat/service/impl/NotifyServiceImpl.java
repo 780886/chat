@@ -75,6 +75,7 @@ public class NotifyServiceImpl implements NotifyService {
     public String sendCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException {
         String redisCaptcha = redisUtils.get(captchaKey);
         redisUtils.del(captchaKey);
+        //TODO 后面需要自己封装
         Assert.isTrue(sendCodeParam != null, "参数不能为空,请重新发送验证码");
         Assert.isTrue(sendCodeParam.getCaptcha() != null, "验证码不能为空");
         Assert.isTrue(sendCodeParam.getPhone()!= null, "手机号不能为空");
