@@ -29,6 +29,9 @@ public class RegisterServiceImpl implements RegisterService {
     @Resource
     private Md5DigestAsHex md5DigestAsHex;
 
+    @Resource
+    private RedisUtils redisUtils;
+
     @Override
     public LoginToken emailRegister(EmailRegisterParam emailRegisterParam) {
         Assert.isTrue(emailRegisterParam != null, "参数不能为空,请重新注册!");
@@ -70,7 +73,7 @@ public class RegisterServiceImpl implements RegisterService {
         Assert.isTrue(password.equals(confirmPassword),"两次输入的密码不一致,请重新输入!");
         Assert.isTrue(captcha != null,"验证码不能为空,请重新输入！");
         String key = RedisKey.getKey(RedisKey.LOGIN_PHONE_PREFIX, phone);
-        String code = RedisUtils.get(key);
+        String code = redisUtils.get(key);
         Assert.isTrue(captcha.equals(code),"验证码有误,请重新输入！");
         boolean existMobile = this.userService.existMobile(phone);
         Assert.isTrue(existMobile,"手机号已经注册,请重新输入!");

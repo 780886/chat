@@ -1,6 +1,9 @@
 package com.wgq.chat.common.constant;
 
 public class ExpirationTimeConstants {
+
+    // 1 分钟
+    public static final long ONE_MINUTES = 1 * 60;
     // 2 分钟
     public static final long TWO_MINUTES = 2 * 60;
 

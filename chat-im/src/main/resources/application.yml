@@ -9,6 +9,10 @@ spring:
     username: root
     password: 123456
 
+  redis:
+    host: 192.168.4.50
+    port: 6379
+
 mybatis:
   mapper-locations: claas:classpath:mapper/*.xml
   configuration:

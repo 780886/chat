@@ -40,11 +40,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     }
 
-    /**
-     * 判断是不是公共方法，可以未登录访问的
-     *
-     * @param requestURI
-     */
+
     private boolean isPublicURI(String requestURI) {
         String[] split = requestURI.split("/");
         return split.length > 2 && "public".equals(split[3]);

@@ -3,7 +3,7 @@ package com.wgq.chat.common.enums;
 public enum ResultCode implements StatusCode {
 
     SUCCESS(1000, "请求成功"),
-    FAILED(1001, "请求失败"),
+    FAILED(1001, "请求失败");
 
 
     private int code;
