@@ -2,14 +2,16 @@ package com.wgq.chat.common.enums;
 
 
 public enum BizCodeEnum implements StatusCode {
-    UNKNOW_EXCEPTION(10000,"系统未知异常"),
-    VAILD_EXCEPTION(10001,"参数格式检验失败"),
+    UN_KNOW_ERROR(10000,"系统未知异常"),
+    VALID_ERROR(10001,"参数格式检验失败"),
     TO_MANY_REQUEST(10002,"请求流量过大，请稍后再试"),
-    SMS_CODE_EXCEPTION(10003,"验证码获取频率太高，稍后再试!"),
-    USER_EXIST_EXCEPTION(15001,"存在相同的用户"),
-    PHONE_EXIST_EXCEPTION(15002,"存在相同的手机号"),
-    NO_STOCK_EXCEPTION(21000,"商品库存不足"),
-    LOGINACCT_PASSWORD_EXCEPTION(15003,"用户名或密码错误");
+    SMS_CODE_ERROR(10003,"验证码获取频率太高，稍后再试!"),
+    USER_EXIST_ERROR(15001,"存在相同的用户"),
+    PHONE_EXIST_ERROR(15002,"存在相同的手机号"),
+    NO_STOCK_ERROR(21000,"商品库存不足"),
+    USER_NAME_EXIST(15003, "用户名已存在"),
+    USER_EMAIL_EXIST(15004, "用户邮箱已存在"),
+    USERNAME_PASSWORD_ERROR(15003,"用户名或密码错误");
 
 
     private int code;

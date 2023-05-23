@@ -43,7 +43,7 @@ public class NotifyServiceImpl implements NotifyService {
             long currentTime = Long.parseLong(redisCode.split("_")[1]);
             if (System.currentTimeMillis() - currentTime < 60000) {
                 //60s内不能再发
-                throw new BusinessException(BizCodeEnum.SMS_CODE_EXCEPTION);
+                throw new BusinessException(BizCodeEnum.SMS_CODE_ERROR);
             }
         }
         //2、验证码的再次效验 redis.存key-phone,value-code
