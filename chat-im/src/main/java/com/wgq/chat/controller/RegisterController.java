@@ -25,16 +25,14 @@ public class RegisterController {
 
     @PostMapping("/email-register")
     @ApiOperation(value = "邮箱注册用户")
-    public LoginToken emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) {
-        LoginToken loginToken = registerService.emailRegister(emailRegisterParam);
-        return loginToken;
+    public void emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) {
+        registerService.emailRegister(emailRegisterParam);
     }
 
     @PostMapping("/phone-register")
     @ApiOperation(value = "手机号注册用户")
-    public LoginToken phoneRegister(@RequestBody PhoneRegisterParam phoneRegisterParam) {
-        LoginToken loginToken = registerService.phoneRegister(phoneRegisterParam);
-        return loginToken;
+    public void phoneRegister(@RequestBody PhoneRegisterParam phoneRegisterParam) {
+        registerService.phoneRegister(phoneRegisterParam);
     }
 
 }

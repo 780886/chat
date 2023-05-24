@@ -7,5 +7,5 @@ public interface LoginService {
 
     String getValidSubject(String token);
 
-    LoginUser login(UserLoginQuery loginQuery);
+    String login(UserLoginQuery loginQuery);
 }

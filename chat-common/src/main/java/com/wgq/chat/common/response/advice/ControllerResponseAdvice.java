@@ -25,6 +25,14 @@ public class ControllerResponseAdvice implements ResponseBodyAdvice<Object> {
     @SneakyThrows
     @Override
     public Object beforeBodyWrite(Object data, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+        if(methodParameter.getGenericParameterType().equals(void.class)){
+            ObjectMapper objectMapper=  new ObjectMapper();
+            try {
+                return objectMapper.writeValueAsString(Result.success());
+            }catch (Exception e) {
+                throw new BusinessException(BizCodeEnum.RESPONSE_PACK_ERROR,e.getMessage());
+            }
+        }
         if(methodParameter.getGenericParameterType().equals(String.class)){
             ObjectMapper objectMapper=  new ObjectMapper();
             try {

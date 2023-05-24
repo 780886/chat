@@ -24,9 +24,9 @@ public class LoginController {
 
     @PostMapping("/login")
     @ApiOperation(value = "登录")
-    public LoginUser login(@RequestBody UserLoginQuery loginQuery) {
-        LoginUser loginUser =  loginService.login(loginQuery);
-        return loginUser;
+    public String login(@RequestBody UserLoginQuery loginQuery) {
+        String token =  loginService.login(loginQuery);
+        return token;
     }
 
 }

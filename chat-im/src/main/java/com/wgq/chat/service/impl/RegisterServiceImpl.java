@@ -33,7 +33,7 @@ public class RegisterServiceImpl implements RegisterService {
     private RedisUtils redisUtils;
 
     @Override
-    public LoginToken emailRegister(EmailRegisterParam emailRegisterParam) {
+    public void emailRegister(EmailRegisterParam emailRegisterParam) {
         Assert.isTrue(emailRegisterParam != null, "参数不能为空,请重新注册!");
         String email = emailRegisterParam.getEmail();
         String userName = emailRegisterParam.getUserName();
@@ -53,11 +53,10 @@ public class RegisterServiceImpl implements RegisterService {
         Assert.isTrue(existUserName,"用户名已存在,请重新输入!");
         User user = UserAssembler.assembleUser(emailRegisterParam,md5DigestAsHex);
         this.userService.addUser(user);
-        return null;
     }
 
     @Override
-    public LoginToken phoneRegister(PhoneRegisterParam phoneRegisterParam) {
+    public void phoneRegister(PhoneRegisterParam phoneRegisterParam) {
         Assert.isTrue(phoneRegisterParam != null, "参数不能为空,请重新注册!");
         String phone = phoneRegisterParam.getPhone();
         String userName = phoneRegisterParam.getUserName();
@@ -65,29 +64,23 @@ public class RegisterServiceImpl implements RegisterService {
         String confirmPassword = phoneRegisterParam.getConfirmPassword();
         String channel = phoneRegisterParam.getChannel();
         String captcha = phoneRegisterParam.getCaptcha();
-        Assert.isTrue(StringUtils.isAnyBlank(userName,phone,password,confirmPassword,channel),"请求参数不完整,请重新输入!");
+        Assert.isTrue(!StringUtils.isAnyBlank(userName,phone,password,confirmPassword,channel),"请求参数不完整,请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkMobile(phone),"手机号格式错误，请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkUsername(userName),"用户名格式错误,请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkPassword(password),"密码格式错误，请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkPassword(confirmPassword),"密码格式错误，请重新输入!");
         Assert.isTrue(password.equals(confirmPassword),"两次输入的密码不一致,请重新输入!");
         Assert.isTrue(captcha != null,"验证码不能为空,请重新输入！");
-        String code = redisUtils.get(RedisKey.LOGIN_PHONE_PREFIX+phone);
-        Assert.isTrue(captcha.equals(code),"验证码有误,请重新输入！");
+        String code = redisUtils.get(RedisKey.SMS_CODE_CACHE_PREFIX+phone);
+        Assert.isTrue(code != null,"验证码已过期,请重新发送验证码!");
+        String[] split = code.split("_");
+        Assert.isTrue(!captcha.equals(split[0]),"验证码有误,请重新输入！");
         boolean existMobile = this.userService.existMobile(phone);
         Assert.isTrue(existMobile,"手机号已经注册,请重新输入!");
         boolean existUserName = this.userService.existUserName(userName);
         Assert.isTrue(existUserName,"用户名已存在,请重新输入!");
         User user = UserAssembler.assembleUser(phoneRegisterParam,md5DigestAsHex);
         this.userService.addUser(user);
-        LoginUser loginUser = new LoginUser.LoginUserBuild()
-                .userId(user.getUserId())
-                .userName(user.getUserName())
-                .nickName(user.getNickName())
-                .avatar(user.getAvatar())
-                .deviceId(user.getDeviceId())
-                .build();
-        return null;
     }
 
 

@@ -5,7 +5,7 @@ import com.wgq.chat.pojo.param.EmailRegisterParam;
 import com.wgq.chat.pojo.param.PhoneRegisterParam;
 
 public interface RegisterService {
-    LoginToken emailRegister(EmailRegisterParam emailRegisterParam);
+    void emailRegister(EmailRegisterParam emailRegisterParam);
 
-    LoginToken phoneRegister(PhoneRegisterParam phoneRegisterParam);
+    void phoneRegister(PhoneRegisterParam phoneRegisterParam);
 }

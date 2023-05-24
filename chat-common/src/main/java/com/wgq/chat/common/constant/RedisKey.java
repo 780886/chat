@@ -11,16 +11,11 @@ public class RedisKey {
      * 用户信息
      */
     public static final String USER_INFO_STRING = "userInfo:uid_%d";
-
-    // 用户登录 token 前缀
-    public static final String USER_TOKEN_PREFIX = "user:token:";
     /**
      * 用户token存放
      */
-    public static final String USER_TOKEN_STRING = "userToken:uid_%d";
+    public static final String USER_TOKEN_PREFIX = "userToken:uid_%d";
 
-    // 短信验证码前缀
-    public static final String LOGIN_PHONE_PREFIX = "login:phone:";
 
     public static final String SMS_CODE_CACHE_PREFIX = "sms:code:";
 
