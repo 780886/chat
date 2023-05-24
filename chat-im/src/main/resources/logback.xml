@@ -3,29 +3,41 @@
     <!--日志路径 -->
     <property name="LOG_PATH" value="/data/logs/chat-im"/>
     <property name="LOG_FILE" value="chat-im"/>
-    <!-- 格式化-->
+
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <!-- 彩色日志格式 -->
     <property name="CONSOLE_LOG_PATTERN"
-              value="|%level|%d{yyyy-MM-dd HH:mm:ss.SSS}|%thread|%X{tid}|uid=%X{uid}|%msg|%X{callChain}%n"/>
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+<!--    &lt;!&ndash; 格式化&ndash;&gt;-->
+<!--    <property name="CONSOLE_LOG_PATTERN"-->
+<!--              value="|%level|%d{yyyy-MM-dd HH:mm:ss.SSS}|%thread|%X{tid}|uid=%X{uid}|%msg|%X{callChain}%n"/>-->
+    <property name="MDC_LOG_PATTERN" value="IP:%X{req.remoteHost} -url:%X{req.requestURI} -Method:%X{req.method} - QueryString:%X{req.queryString} - device:%X{req.userAgent}  -ips:%X{req.xForwardedFor}  - %m%n "/>
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
+<!--    控制台输出-->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder >
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
         </encoder>
     </appender>
     <!-- 全部日志的配置-->
     <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/${LOG_FILE}.log</file>
-        <append>true</append>
-        <encoder >
+        <file>${LOG_PATH}/${LOG_FILE}/fileAppender/.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 按天生成日志文件 -->
+            <!-- 按天生成日志文件 日志输出的文件名-->
             <fileNamePattern>
-                ${LOG_PATH}/archived/${LOG_FILE}.%d{dd-MM-yyyy}.log
+                ${LOG_PATH}/archived/${LOG_FILE}/fileAppender/.%d{dd-MM-yyyy}.log
             </fileNamePattern>
             <!--保留天数-->
             <maxHistory>30</maxHistory>
@@ -36,26 +48,27 @@
     </appender>
     <!-- error日志的配置-->
     <appender name="fileError" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<!--        打印日志级别-->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
-        <file>${LOG_PATH}/${LOG_FILE}.error.log</file>
+        <file>${LOG_PATH}/${LOG_FILE}/fileError/.error.log</file>
         <append>true</append>
-        <encoder >
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>
-                ${LOG_PATH}/archived/${LOG_FILE}.%d{dd-MM-yyyy}.error.log
+                ${LOG_PATH}/archived/${LOG_FILE}/fileError/.%d{dd-MM-yyyy}.error.log
             </fileNamePattern>
             <maxHistory>30</maxHistory>
             <totalSizeCap>2GB</totalSizeCap>
         </rollingPolicy>
     </appender>
 
-    <root level="info">
+    <root  level="info">
         <!--文件输出-->
         <appender-ref ref="fileAppender"/>
         <appender-ref ref="fileError"/>
