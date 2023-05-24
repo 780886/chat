@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existUserName(String userName) {
+    public Boolean existUserName(String userName) {
         return this.userMapper.existUserName(userName);
     }
 
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existMobile(String phone) {
+    public Boolean existMobile(String phone) {
         return this.userMapper.existMobile(phone);
     }
 

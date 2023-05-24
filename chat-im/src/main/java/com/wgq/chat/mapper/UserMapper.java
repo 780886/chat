@@ -10,9 +10,9 @@ public interface UserMapper {
 
     boolean existEmail(String email);
 
-    boolean existUserName(String userName);
+    Boolean existUserName(String userName);
 
     User getUserByUserName(String userName);
 
-    boolean existMobile(String phone);
+    Boolean existMobile(String phone);
 }

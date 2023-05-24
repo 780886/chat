@@ -45,10 +45,19 @@ public class NotifyController {
         notifyService.captcha(request,response);
     }
 
+    @GetMapping("/verification-code/{captcha}")
+    @ApiOperation("验证图形验证码")
+    public boolean verificationCode(HttpServletRequest request, HttpServletResponse response,
+                                 @PathVariable String captcha) {
+        String captchaKey = CaptchaUtil.getCaptchaKey(request,md5DigestAsHex);
+        boolean  verificationResult = notifyService.verificationCode(captchaKey,captcha);
+        return verificationResult;
+    }
+
 
     @GetMapping("/send-code")
     @ApiOperation(value = "发送手机验证码")
-    public String sendCode(HttpServletRequest request,@RequestBody SendCodeParam sendCodeParam) throws BusinessException {
+    public String sendCode(HttpServletRequest request,SendCodeParam sendCodeParam) throws BusinessException {
         String captchaKey = CaptchaUtil.getCaptchaKey(request,md5DigestAsHex);
         String code = notifyService.sendCode(captchaKey,sendCodeParam);
         return code;

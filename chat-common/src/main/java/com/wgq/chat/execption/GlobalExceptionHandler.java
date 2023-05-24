@@ -19,12 +19,6 @@ public class GlobalExceptionHandler {
         return Result.fail(e.getCode(),e.getMsg());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public Result<Object> IllegalArgumentExceptionHandler(IllegalArgumentException e){
-        e.printStackTrace();
-        log.error("异常类型:{},业务信息:{}", e.getClass(),e.getMessage());
-        return Result.fail(ResultCode.FAILED.getCode(),e.getMessage());
-    }
 
     @ExceptionHandler(Exception.class)
     public Result<Object> ExceptionHandler(Exception e){

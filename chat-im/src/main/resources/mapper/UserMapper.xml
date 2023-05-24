@@ -6,8 +6,12 @@
 
     <!-- 邮箱注册用户 -->
     <insert id="addUser" parameterType="com.wgq.chat.pojo.po.User">
-        insert into user(user_name,email,passWord,channel)
-        values (#{userName},#{email},#{passWord},#{channel})
+        insert into user (user_id, user_name, nick_name, email, password, gender, avatar, personal_signature, birthday, mobile,
+                          last_login_time, activate, activate_time, channel, secret_mobile, device, device_id, device_model, ip,
+                          status, gmt_create, gmt_modified)
+        values (#{userId},#{userName},#{nickName},#{email},#{password},#{gender},#{avatar},#{personalSignature},#{birthday},#{mobile},
+                #{lastLoginTime},#{activate},#{activateTime},#{channel},#{secretMobile},#{device},#{deviceId},#{deviceModel},#{ip},
+                #{status},#{gmtCreate},#{gmtModified});
     </insert>
 
     <select id="existEmail" resultType="java.lang.Boolean">

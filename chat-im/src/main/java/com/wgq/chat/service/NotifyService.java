@@ -15,4 +15,6 @@ public interface NotifyService {
     void captcha(HttpServletRequest request, HttpServletResponse response);
 
     String sendCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException;
+
+    boolean verificationCode(String captchaKey, String captcha);
 }

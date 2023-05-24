@@ -11,11 +11,11 @@ public interface UserService {
 
     boolean existEmail(String email);
 
-    boolean existUserName(String userName);
+    Boolean existUserName(String userName);
 
     int addUser(User user);
 
-    boolean existMobile(String phone);
+    Boolean existMobile(String phone);
 
     User getUserByUserName(String userName);
 }

@@ -75,10 +75,10 @@ public class RegisterServiceImpl implements RegisterService {
         Assert.isTrue(code != null,"验证码已过期,请重新发送验证码!");
         String[] split = code.split("_");
         Assert.isTrue(!captcha.equals(split[0]),"验证码有误,请重新输入！");
-        boolean existMobile = this.userService.existMobile(phone);
-        Assert.isTrue(existMobile,"手机号已经注册,请重新输入!");
-        boolean existUserName = this.userService.existUserName(userName);
-        Assert.isTrue(existUserName,"用户名已存在,请重新输入!");
+        Boolean existMobile = this.userService.existMobile(phone);
+        Assert.isTrue(existMobile == null,"手机号已经注册,请重新输入!");
+        Boolean existUserName = this.userService.existUserName(userName);
+        Assert.isTrue(existUserName == null,"用户名已存在,请重新输入!");
         User user = UserAssembler.assembleUser(phoneRegisterParam,md5DigestAsHex);
         this.userService.addUser(user);
     }

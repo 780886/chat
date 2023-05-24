@@ -5,6 +5,8 @@ import com.wgq.chat.pojo.param.PhoneRegisterParam;
 import com.wgq.chat.pojo.po.User;
 import com.wgq.chat.pojo.param.EmailRegisterParam;
 
+import java.util.Date;
+
 public class UserAssembler {
 
 
@@ -15,6 +17,9 @@ public class UserAssembler {
         user.setPassword(encryptPassword);
         user.setUserName(emailRegisterParam.getUserName());
         user.setChannel(emailRegisterParam.getChannel());
+        user.setStatus(0);
+        user.setGmtCreate(new Date().getTime());
+        user.setGmtModified(new Date().getTime());
         return user;
     }
 
@@ -25,6 +30,9 @@ public class UserAssembler {
         user.setPassword(encryptPassword);
         user.setUserName(phoneRegisterParam.getUserName());
         user.setChannel(phoneRegisterParam.getChannel());
+        user.setStatus(0);
+        user.setGmtCreate(new Date().getTime());
+        user.setGmtModified(new Date().getTime());
         return user;
     }
 
