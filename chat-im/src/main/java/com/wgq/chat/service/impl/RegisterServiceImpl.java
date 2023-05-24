@@ -47,10 +47,10 @@ public class RegisterServiceImpl implements RegisterService {
         Assert.isTrue(FormatCheckUtil.checkPassword(password),"密码格式错误，请重新输入!");
         Assert.isTrue(FormatCheckUtil.checkPassword(confirmPassword),"密码格式错误，请重新输入!");
         Assert.isTrue(password.equals(confirmPassword),"两次输入的密码不一致,请重新输入!");
-        boolean existEmail = this.userService.existEmail(email);
-        Assert.isTrue(existEmail,"邮箱已经注册,请重新输入!");
-        boolean existUserName = this.userService.existUserName(userName);
-        Assert.isTrue(existUserName,"用户名已存在,请重新输入!");
+        Boolean existEmail = this.userService.existEmail(email);
+        Assert.isTrue(existEmail != null,"邮箱已经注册,请重新输入!");
+        Boolean existUserName = this.userService.existUserName(userName);
+        Assert.isTrue(existUserName != null,"用户名已存在,请重新输入!");
         User user = UserAssembler.assembleUser(emailRegisterParam,md5DigestAsHex);
         this.userService.addUser(user);
     }

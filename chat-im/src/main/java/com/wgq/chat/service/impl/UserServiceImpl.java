@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean existEmail(String email) {
+    public Boolean existEmail(String email) {
         return this.userMapper.existEmail(email);
     }
 

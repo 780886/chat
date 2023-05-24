@@ -73,13 +73,11 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public String sendCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException {
-        //TODO 后面需要自己封装
         Assert.isTrue(sendCodeParam != null, "参数不能为空,请重新发送验证码");
         Assert.isTrue(sendCodeParam.getCaptcha() != null, "验证码不能为空");
         boolean verificationResult = verificationCode(captchaKey, sendCodeParam.getCaptcha());
         Assert.isTrue(verificationResult,"验证码不正确,请重新输入!");
         Assert.isTrue(sendCodeParam.getPhone()!= null, "手机号不能为空");
-        //判断验证码是否相等
         //1、接口防刷
         String redisCode = redisUtils.get(RedisKey.SMS_CODE_CACHE_PREFIX+sendCodeParam.getPhone());
         if (!StringUtils.isNullOrEmpty(redisCode)){

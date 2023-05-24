@@ -9,7 +9,7 @@ import com.wgq.chat.pojo.query.UserLoginQuery;
 
 public interface UserService {
 
-    boolean existEmail(String email);
+    Boolean existEmail(String email);
 
     Boolean existUserName(String userName);
 
