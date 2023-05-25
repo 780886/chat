@@ -6,9 +6,6 @@ import com.wgq.chat.common.constant.ExpirationTimeConstants;
 import com.wgq.chat.common.constant.RedisKey;
 import com.wgq.chat.common.enums.BizCodeEnum;
 import com.wgq.chat.execption.BusinessException;
-import com.wgq.chat.pojo.LoginToken;
-import com.wgq.chat.pojo.param.EmailRegisterParam;
-import com.wgq.chat.pojo.param.PhoneRegisterParam;
 import com.wgq.chat.pojo.param.SendCodeParam;
 import com.wgq.chat.service.NotifyService;
 import com.wgq.chat.utils.CaptchaUtil;
@@ -47,10 +44,10 @@ public class NotifyServiceImpl implements NotifyService {
         String cacheKey = CaptchaUtil.getCaptchaKey(request,md5DigestAsHex);
         String capText = captchaProducer.createText();
         log.info("验证码生成完毕，回显到屏幕上:{}",capText);
-        redisUtils.set(cacheKey, capText, ExpirationTimeConstants.ONE_MINUTES, TimeUnit.SECONDS);
         BufferedImage bi = captchaProducer.createImage(capText);
         ServletOutputStream out = null;
         try {
+            redisUtils.set(cacheKey, capText, ExpirationTimeConstants.ONE_MINUTES, TimeUnit.SECONDS);
             response.setDateHeader("Expires", 0);
             response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
             response.addHeader("Cache-Control", "create_date-check=0, pre-check=0");
@@ -72,11 +69,11 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    public String sendCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException {
+    public String sendPhoneValidateCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException {
         Assert.isTrue(sendCodeParam != null, "参数不能为空,请重新发送验证码");
         Assert.isTrue(sendCodeParam.getCaptcha() != null, "验证码不能为空");
-        boolean verificationResult = verificationCode(captchaKey, sendCodeParam.getCaptcha());
-        Assert.isTrue(verificationResult,"验证码不正确,请重新输入!");
+        boolean validateResult = validateCode(captchaKey, sendCodeParam.getCaptcha());
+        Assert.isTrue(validateResult,"验证码不正确,请重新输入!");
         Assert.isTrue(sendCodeParam.getPhone()!= null, "手机号不能为空");
         //1、接口防刷
         String redisCode = redisUtils.get(RedisKey.SMS_CODE_CACHE_PREFIX+sendCodeParam.getPhone());
@@ -99,7 +96,7 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    public boolean verificationCode(String captchaKey, String captcha) {
+    public boolean validateCode(String captchaKey, String captcha) {
         String redisCaptcha = redisUtils.get(captchaKey);
         Assert.isTrue(redisCaptcha != null,"验证码已过期,请重新获取!");
         return redisCaptcha.equals(captcha);

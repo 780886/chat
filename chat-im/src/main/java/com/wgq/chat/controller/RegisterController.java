@@ -1,11 +1,10 @@
 package com.wgq.chat.controller;
 
-import com.wgq.chat.pojo.LoginToken;
-import com.wgq.chat.pojo.param.EmailRegisterParam;
-import com.wgq.chat.pojo.param.PhoneRegisterParam;
-import com.wgq.chat.service.NotifyService;
+import com.wgq.chat.pojo.dto.LoginDTO;
+import com.wgq.chat.pojo.param.register.EmailRegisterParam;
+import com.wgq.chat.pojo.param.register.MobileRegisterParam;
+import com.wgq.chat.pojo.param.register.UserNameRegisterParam;
 import com.wgq.chat.service.RegisterService;
-import com.wgq.chat.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,16 +22,23 @@ public class RegisterController {
     @Resource
     private RegisterService registerService;
 
+    @PostMapping("/user-name-register")
+    @ApiOperation(value = "用户名注册用户")
+    public void userNameRegister(@RequestBody UserNameRegisterParam userNameRegisterParam) {
+        registerService.userNameRegister(userNameRegisterParam);
+    }
+
     @PostMapping("/email-register")
     @ApiOperation(value = "邮箱注册用户")
-    public void emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) {
-        registerService.emailRegister(emailRegisterParam);
+    public LoginDTO emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) {
+        LoginDTO loginDTO = registerService.emailRegister(emailRegisterParam);
+        return loginDTO;
     }
 
     @PostMapping("/phone-register")
     @ApiOperation(value = "手机号注册用户")
-    public void phoneRegister(@RequestBody PhoneRegisterParam phoneRegisterParam) {
-        registerService.phoneRegister(phoneRegisterParam);
+    public void phoneRegister(@RequestBody MobileRegisterParam mobileRegisterParam) {
+        registerService.phoneRegister(mobileRegisterParam);
     }
 
 }

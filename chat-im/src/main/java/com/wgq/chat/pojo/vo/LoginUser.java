@@ -1,6 +1,4 @@
-package com.wgq.chat.pojo.dto;
-
-import lombok.Data;
+package com.wgq.chat.pojo.vo;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

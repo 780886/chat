@@ -1,7 +1,7 @@
 package com.wgq.chat.controller;
 
 
-import com.wgq.chat.pojo.dto.LoginUser;
+import com.wgq.chat.pojo.dto.LoginDTO;
 import com.wgq.chat.pojo.query.UserLoginQuery;
 import com.wgq.chat.service.LoginService;
 import io.swagger.annotations.Api;
@@ -24,9 +24,16 @@ public class LoginController {
 
     @PostMapping("/login")
     @ApiOperation(value = "登录")
-    public String login(@RequestBody UserLoginQuery loginQuery) {
-        String token =  loginService.login(loginQuery);
-        return token;
+    public LoginDTO login(@RequestBody UserLoginQuery loginQuery) {
+        LoginDTO loginDTO =  loginService.login(loginQuery);
+        return loginDTO;
+    }
+
+
+    @PostMapping("/loginOut")
+    @ApiOperation(value = "退出登录")
+    public void loginOut() {
+
     }
 
 }

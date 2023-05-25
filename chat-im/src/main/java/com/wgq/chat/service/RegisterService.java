@@ -1,11 +1,16 @@
 package com.wgq.chat.service;
 
-import com.wgq.chat.pojo.LoginToken;
-import com.wgq.chat.pojo.param.EmailRegisterParam;
-import com.wgq.chat.pojo.param.PhoneRegisterParam;
+import com.wgq.chat.pojo.dto.LoginDTO;
+import com.wgq.chat.pojo.param.register.EmailRegisterParam;
+import com.wgq.chat.pojo.param.register.MobileRegisterParam;
+import com.wgq.chat.pojo.param.register.UserNameRegisterParam;
 
 public interface RegisterService {
-    void emailRegister(EmailRegisterParam emailRegisterParam);
 
-    void phoneRegister(PhoneRegisterParam phoneRegisterParam);
+    LoginDTO emailRegister(EmailRegisterParam emailRegisterParam);
+
+    void phoneRegister(MobileRegisterParam mobileRegisterParam);
+
+    void userNameRegister(UserNameRegisterParam userNameRegisterParam);
+
 }
