@@ -1,7 +1,10 @@
 package com.wgq.chat.common.enums;
 
 
-public enum BizCodeEnum implements StatusCode {
+public enum BusinessCodeEnum implements StatusCode {
+
+    SUCCESS(1000, "请求成功"),
+    FAILED(1001, "请求失败"),
     UN_KNOW_ERROR(10000,"系统未知异常"),
     VALID_ERROR(10001,"参数格式检验失败"),
     RESPONSE_PACK_ERROR(1004, "response返回包装失败"),
@@ -19,7 +22,7 @@ public enum BizCodeEnum implements StatusCode {
 
     private int code;
     private String msg;
-    BizCodeEnum(int code, String msg){
+    BusinessCodeEnum(int code, String msg){
         this.code = code;
         this.msg = msg;
     }

@@ -13,6 +13,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.util.Calendar;
 import java.util.Date;
 
 @Slf4j
@@ -72,15 +73,15 @@ public class JwtUtil {
      * 构建JWT
      *
      * @param alg      jwt 加密算法
-     * @param sub      jwt 面向的用户
-     * @param aud      jwt 接收方
-     * @param tid      jwt 唯一身份标识
-     * @param iss      jwt 签发者
+     * @param sub      jwt 面向的用户 userId
+     * @param aud      jwt 接收方  userName
+     * @param tid      jwt 唯一身份标识 deviceId
+     * @param iss      jwt 签发者  wgq
      * @param nbf      jwt 生效日期时间
      * @param duration jwt 有效时间，单位：秒
      * @return JWT字符串
      */
-    private static String buildJWT(SignatureAlgorithm alg, String sub, String aud, String tid, String iss, Date nbf, Integer duration) {
+    private static String buildJWT(SignatureAlgorithm alg, String sub, String aud, String tid, String iss, Date nbf, Long duration) {
         // jwt的签发时间
         long iat = System.currentTimeMillis();
         // jwt的过期时间，这个过期时间必须要大于签发时间
@@ -115,7 +116,7 @@ public class JwtUtil {
      * @param duration jwt 有效时间，单位：秒
      * @return JWT字符串
      */
-    public static String buildJWT(String sub, String aud, String tid, String iss, Date nbf, Integer duration) {
+    public static String buildJWT(String sub, String aud, String tid, String iss, Date nbf, Long duration) {
         return buildJWT(JWT_ALG, sub, aud, tid, iss, nbf, duration);
     }
 
@@ -127,7 +128,7 @@ public class JwtUtil {
      * @param duration jwt 有效时间，单位：秒
      * @return JWT字符串
      */
-    public static String buildJWT(String sub, String tid, Integer duration) {
+    public static String buildJWT(String sub, String tid, Long duration) {
         return buildJWT(sub, null, tid, null, null, duration);
     }
 
@@ -138,7 +139,7 @@ public class JwtUtil {
      * @param duration jwt 有效时间，单位：秒
      * @return JWT字符串
      */
-    public static String buildJWT(String tid, Integer duration) {
+    public static String buildJWT(String tid, Long duration) {
         return buildJWT(DEFAULT_SUB, tid, duration);
     }
 
@@ -151,7 +152,7 @@ public class JwtUtil {
      * @return JWT字符串
      */
     public static String buildJWT(String tid) {
-        return buildJWT(DEFAULT_SUB, tid, 1200);
+        return buildJWT(DEFAULT_SUB, tid, 1200L);
     }
 
     /**
@@ -219,7 +220,10 @@ public class JwtUtil {
     }
 
     public static void main(String[] args) {
-        String s = JwtUtil.buildJWT("1");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023,4,25,0,40,0);
+        String s = JwtUtil.buildJWT("1","wgq","6DE92C67-EC6E-4365-B367-09E6686498A6","admin",calendar.getTime(),ExpirationTimeConstants.THIRTY_MINUTES);
+        System.out.println("s = " + s);
         Boolean aBoolean = checkJWT(s);
         String jwtID = getJwtID(s);
         System.out.println("token is " + aBoolean + ", jwtID is " + jwtID);

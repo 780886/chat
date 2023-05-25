@@ -4,7 +4,7 @@ import com.google.code.kaptcha.Producer;
 import com.wgq.chat.common.Md5DigestAsHex;
 import com.wgq.chat.common.constant.ExpirationTimeConstants;
 import com.wgq.chat.common.constant.RedisKey;
-import com.wgq.chat.common.enums.BizCodeEnum;
+import com.wgq.chat.common.enums.BusinessCodeEnum;
 import com.wgq.chat.execption.BusinessException;
 import com.wgq.chat.pojo.param.SendCodeParam;
 import com.wgq.chat.service.NotifyService;
@@ -82,7 +82,7 @@ public class NotifyServiceImpl implements NotifyService {
             String[] split = redisCode.split("_");
             long currentTime = Long.parseLong(split[1]);
             if (System.currentTimeMillis() - currentTime < 60000){
-                throw new BusinessException(BizCodeEnum.SMS_CODE_ERROR);
+                throw new BusinessException(BusinessCodeEnum.SMS_CODE_ERROR);
             }
         }
         //2、redis.存key-phone,value-code

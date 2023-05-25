@@ -1,7 +1,7 @@
 package com.wgq.chat.utils;
 
 
-import com.wgq.chat.common.enums.ResultCode;
+import com.wgq.chat.common.enums.BusinessCodeEnum;
 import com.wgq.chat.common.enums.StatusCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,8 +27,8 @@ public class Result<T> {
     public static <T> Result<T> success(){
         Result<T> result = new Result<>();
         result.setSuccess(Boolean.TRUE);
-        result.setCode(ResultCode.SUCCESS.getCode());
-        result.setMessage(ResultCode.SUCCESS.getMsg());
+        result.setCode(BusinessCodeEnum.SUCCESS.getCode());
+        result.setMessage(BusinessCodeEnum.SUCCESS.getMsg());
         result.setData(null);
         return result;
     }
@@ -36,8 +36,8 @@ public class Result<T> {
     public static <T> Result<T> success(T data){
         Result<T> result = new Result<>();
         result.setSuccess(Boolean.TRUE);
-        result.setCode(ResultCode.SUCCESS.getCode());
-        result.setMessage(ResultCode.SUCCESS.getMsg());
+        result.setCode(BusinessCodeEnum.SUCCESS.getCode());
+        result.setMessage(BusinessCodeEnum.SUCCESS.getMsg());
         result.setData(data);
 
         return result;

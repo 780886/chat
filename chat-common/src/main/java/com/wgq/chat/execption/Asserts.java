@@ -1,4 +1,4 @@
-package com.wgq.chat.utils;
+package com.wgq.chat.execption;
 
 import com.wgq.chat.common.enums.StatusCode;
 import com.wgq.chat.execption.BusinessException;
@@ -15,8 +15,18 @@ import java.util.List;
 public class Asserts {
 
     public static void isTrue(boolean expression, StatusCode statusCode) throws BusinessException {
+        isTrue(expression, statusCode, null);
+    }
+
+    public static void isTrue(boolean expression, StatusCode statusCode,
+                              String suffix) throws BusinessException {
+        isTrue(expression, statusCode, suffix, null);
+    }
+
+    public static void isTrue(boolean expression, StatusCode statusCode,
+                              String suffix, List<Object> parameters) throws BusinessException {
         if (expression) {
-            throw new BusinessException(statusCode);
+            throw new BusinessException(statusCode, suffix, parameters);
         }
     }
 
