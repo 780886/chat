@@ -19,6 +19,7 @@ public class UserAssembler {
         user.setUserName(emailRegisterParam.getUserName());
         user.setChannel(emailRegisterParam.getChannel());
         user.setStatus(0);
+        user.setActivate(0);
         user.setGmtCreate(new Date().getTime());
         user.setGmtModified(new Date().getTime());
         return user;

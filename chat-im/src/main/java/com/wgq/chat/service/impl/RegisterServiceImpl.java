@@ -15,12 +15,14 @@ import com.wgq.chat.pojo.vo.LoginUser;
 import com.wgq.chat.service.RegisterService;
 import com.wgq.chat.service.UserService;
 import com.wgq.chat.utils.FormatCheckUtil;
+import com.wgq.chat.utils.MailUtils;
 import com.wgq.chat.utils.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 
 import javax.annotation.Resource;
+import java.util.UUID;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -34,6 +36,9 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Resource
     private RedisUtils redisUtils;
+
+    @Resource
+    private MailUtils mailUtils;
 
 
     @Override
@@ -65,6 +70,7 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public LoginDTO emailRegister(EmailRegisterParam emailRegisterParam) throws BusinessException {
         Asserts.isTrue(emailRegisterParam == null, BusinessCodeEnum.EMAIL_FORMAT_ERROR);
+        //验证validateCaptcha
         String email = emailRegisterParam.getEmail();
         String userName = emailRegisterParam.getUserName();
         String password = emailRegisterParam.getPassword();
@@ -82,6 +88,12 @@ public class RegisterServiceImpl implements RegisterService {
         Boolean existUserName = this.userService.existUserName(userName);
         Asserts.isTrue(existUserName != null,BusinessCodeEnum.USER_NAME_EXIST_ERROR);
         User user = UserAssembler.assembleUser(emailRegisterParam,md5DigestAsHex);
+        //发送激活邮件
+        String activeCode = UUID.randomUUID().toString();
+        String projectPath = System.getProperty("user.dir");
+        String activeUrl = projectPath + "/frontdesk/member/active?activeCode=" + activeCode;
+        String text = "恭喜您注册成功！<a href = '" + activeUrl + "'>点击激活</a>完成账号认证";
+        mailUtils.sendMail(emailRegisterParam.getEmail(), text, "chat激活邮件");
         this.userService.addUser(user);
         LoginUser loginUser = new LoginUser.LoginUserBuild()
                 .userId(user.getUserId())
@@ -92,6 +104,34 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         return new LoginDTO(loginUser,"");
     }
+
+    public String active(String checkCode) {
+//        //根据激活码查询用户
+//        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("checkCode", checkCode);
+//        Member member = memberMapper.selectOne(queryWrapper);
+//
+//        if (member == null) {
+//            return "激活失败，激活码错误！";
+//        } else {
+//            member.setActive(true);
+//            memberMapper.updateById(member);
+//            return "激活成功，请<a href='" + projectPath + "/frontdesk/login'>登录</a>";
+//        }
+        return null;
+    }
+//    public void activeEmail(String userId) {
+//        // 根据userId查询用户信息
+//        User user = userDao.getUserById(userId);
+//        // 验证用户信息
+//        if (user != null) {
+//            // 更新用户状态
+//            user.setStatus(1);
+//            userDao.update(user);
+//        }
+//    }
+
+
 
     @Override
     public void phoneRegister(MobileRegisterParam mobileRegisterParam) throws BusinessException {
