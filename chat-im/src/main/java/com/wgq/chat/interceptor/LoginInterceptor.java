@@ -1,6 +1,7 @@
 package com.wgq.chat.interceptor;
 
 import com.wgq.chat.service.LoginService;
+import com.wgq.chat.utils.JwtUtil;
 import com.wgq.chat.utils.StringUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -26,8 +27,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = getToken(request);
-        String subject = loginService.getValidSubject(token);
+        String header = request.getHeader(AUTHORIZATION_HEADER);
+        String subject = loginService.getValidSubject(header);
         if (StringUtils.isNullOrEmpty(subject)){
             request.setAttribute(ATTRIBUTE_UID,subject);
         }else {
@@ -40,18 +41,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     }
 
-
     private boolean isPublicURI(String requestURI) {
         String[] split = requestURI.split("/");
         return split.length > 2 && "public".equals(split[3]);
-    }
-
-
-    private String getToken(HttpServletRequest request) {
-        String header = request.getHeader(AUTHORIZATION_HEADER);
-        return Optional.ofNullable(header)
-                .filter(h -> h.startsWith(AUTHORIZATION_SCHEMA))
-                .map(h -> h.substring(AUTHORIZATION_SCHEMA.length()))
-                .orElse(null);
     }
 }

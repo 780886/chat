@@ -33,7 +33,7 @@ public class JwtUtil {
     /**
      * JWT 添加至HTTP HEAD中的前缀
      */
-    private static final String JWT_SEPARATOR = "";
+    private static final String JWT_SEPARATOR = "Bearer ";
 
     /**
      * 密钥：通过生成 JWT_ALG 和 JWT_RULE 加密生成
