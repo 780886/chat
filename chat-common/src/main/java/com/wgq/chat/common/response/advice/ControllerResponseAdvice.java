@@ -34,7 +34,7 @@ public class ControllerResponseAdvice implements ResponseBodyAdvice<Object> {
         }
         if (methodParameter.getGenericParameterType().equals(boolean.class)){
             boolean result = (boolean) data;
-            return result?Result.success():Result.fail(BusinessCodeEnum.SMS_CODE_VERIFICATION_ERROR);
+            return result?Result.success():Result.fail(BusinessCodeEnum.FAILED);
         }
         return Result.success(data);
     }

@@ -3,6 +3,9 @@ package com.wgq.chat.service.impl;
 import com.wgq.chat.assemble.UserAssembler;
 import com.wgq.chat.common.Md5DigestAsHex;
 import com.wgq.chat.common.constant.RedisKey;
+import com.wgq.chat.common.enums.BusinessCodeEnum;
+import com.wgq.chat.execption.Asserts;
+import com.wgq.chat.execption.BusinessException;
 import com.wgq.chat.pojo.dto.LoginDTO;
 import com.wgq.chat.pojo.param.register.EmailRegisterParam;
 import com.wgq.chat.pojo.param.register.MobileRegisterParam;
@@ -15,7 +18,7 @@ import com.wgq.chat.utils.FormatCheckUtil;
 import com.wgq.chat.utils.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+
 
 import javax.annotation.Resource;
 
@@ -34,50 +37,50 @@ public class RegisterServiceImpl implements RegisterService {
 
 
     @Override
-    public void userNameRegister(UserNameRegisterParam userNameRegisterParam) {
-        Assert.isTrue(userNameRegisterParam != null, "参数不能为空,请重新注册!");
+    public void userNameRegister(UserNameRegisterParam userNameRegisterParam) throws BusinessException {
+        Asserts.isTrue(userNameRegisterParam == null, BusinessCodeEnum.PARAM_NOT_EMPTY);
         String userName = userNameRegisterParam.getUserName();
         String password = userNameRegisterParam.getPassword();
         String confirmPassword = userNameRegisterParam.getConfirmPassword();
         String channel = userNameRegisterParam.getChannel();
         String captcha = userNameRegisterParam.getCaptcha();
-        Assert.isTrue(!StringUtils.isAnyBlank(userName,password,confirmPassword,channel),"请求参数不完整,请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkUsername(userName),"用户名格式错误,请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkPassword(password),"密码格式错误，请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkPassword(confirmPassword),"密码格式错误，请重新输入!");
-        Assert.isTrue(password.equals(confirmPassword),"两次输入的密码不一致,请重新输入!");
-        Assert.isTrue(captcha != null,"验证码不能为空,请重新输入！");
+        Asserts.isTrue(captcha == null,BusinessCodeEnum.CAPTCHA_CODE_NOT_EMPTY);
+        Asserts.isTrue(StringUtils.isAnyBlank(userName,password,confirmPassword,channel),BusinessCodeEnum.REQUEST_PARAM_INCOMPLETE);
+        Asserts.isTrue(!FormatCheckUtil.checkUsername(userName),BusinessCodeEnum.USER_NAME_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkPassword(password),BusinessCodeEnum.PASSWORD_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkPassword(confirmPassword),BusinessCodeEnum.PASSWORD_FORMAT_ERROR);
+        Asserts.isTrue(!password.equals(confirmPassword),BusinessCodeEnum.PASSWORD_NOT_EQUAL);
         //TODO
         String code = redisUtils.get(RedisKey.SMS_CODE_CACHE_PREFIX);
-        Assert.isTrue(code != null,"验证码已过期,请重新发送验证码!");
+        Asserts.isTrue(code == null,BusinessCodeEnum.SMS_CODE_NOT_EXIST);
         String[] split = code.split("_");
-        Assert.isTrue(!captcha.equals(split[0]),"验证码不正确,请重新输入！");
+        Asserts.isTrue(!captcha.equals(split[0]),BusinessCodeEnum.SMS_CODE_VALIDATE_ERROR);
         Boolean existUserName = this.userService.existUserName(userName);
-        Assert.isTrue(existUserName == null,"用户名已存在,请重新输入!");
+        Asserts.isTrue(existUserName != null,BusinessCodeEnum.USER_NAME_EXIST_ERROR);
         User user = UserAssembler.assembleUser(userNameRegisterParam,md5DigestAsHex);
         this.userService.addUser(user);
 
     }
 
     @Override
-    public LoginDTO emailRegister(EmailRegisterParam emailRegisterParam) {
-        Assert.isTrue(emailRegisterParam != null, "参数不能为空,请重新注册!");
+    public LoginDTO emailRegister(EmailRegisterParam emailRegisterParam) throws BusinessException {
+        Asserts.isTrue(emailRegisterParam == null, BusinessCodeEnum.EMAIL_FORMAT_ERROR);
         String email = emailRegisterParam.getEmail();
         String userName = emailRegisterParam.getUserName();
         String password = emailRegisterParam.getPassword();
         String confirmPassword = emailRegisterParam.getConfirmPassword();
         String channel = emailRegisterParam.getChannel();
         String captcha = emailRegisterParam.getCaptcha();
-        Assert.isTrue(StringUtils.isAnyBlank(userName,email,password,confirmPassword,channel),"请求参数不完整,请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkEmail(email),"邮箱格式错误，请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkUsername(userName),"用户名格式错误,请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkPassword(password),"密码格式错误，请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkPassword(confirmPassword),"密码格式错误，请重新输入!");
-        Assert.isTrue(password.equals(confirmPassword),"两次输入的密码不一致,请重新输入!");
+        Asserts.isTrue(StringUtils.isAnyBlank(userName,email,password,confirmPassword,channel),BusinessCodeEnum.REQUEST_PARAM_INCOMPLETE);
+        Asserts.isTrue(!FormatCheckUtil.checkEmail(email),BusinessCodeEnum.EMAIL_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkUsername(userName),BusinessCodeEnum.USER_NAME_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkPassword(password),BusinessCodeEnum.PASSWORD_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkPassword(confirmPassword),BusinessCodeEnum.PASSWORD_FORMAT_ERROR);
+        Asserts.isTrue(!password.equals(confirmPassword),BusinessCodeEnum.PASSWORD_NOT_EQUAL);
         Boolean existEmail = this.userService.existEmail(email);
-        Assert.isTrue(existEmail != null,"邮箱已经注册,请重新输入!");
+        Asserts.isTrue(existEmail != null,BusinessCodeEnum.EMAIL_EXIST_ERROR);
         Boolean existUserName = this.userService.existUserName(userName);
-        Assert.isTrue(existUserName != null,"用户名已存在,请重新输入!");
+        Asserts.isTrue(existUserName != null,BusinessCodeEnum.USER_NAME_EXIST_ERROR);
         User user = UserAssembler.assembleUser(emailRegisterParam,md5DigestAsHex);
         this.userService.addUser(user);
         LoginUser loginUser = new LoginUser.LoginUserBuild()
@@ -91,29 +94,29 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public void phoneRegister(MobileRegisterParam mobileRegisterParam) {
-        Assert.isTrue(mobileRegisterParam != null, "参数不能为空,请重新注册!");
+    public void phoneRegister(MobileRegisterParam mobileRegisterParam) throws BusinessException {
+        Asserts.isTrue(mobileRegisterParam == null, BusinessCodeEnum.PARAM_NOT_EMPTY);
         String phone = mobileRegisterParam.getMobile();
         String userName = mobileRegisterParam.getUserName();
         String password = mobileRegisterParam.getPassword();
         String confirmPassword = mobileRegisterParam.getConfirmPassword();
         String channel = mobileRegisterParam.getChannel();
         String captcha = mobileRegisterParam.getCaptcha();
-        Assert.isTrue(!StringUtils.isAnyBlank(userName,phone,password,confirmPassword,channel),"请求参数不完整,请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkMobile(phone),"手机号格式错误，请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkUsername(userName),"用户名格式错误,请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkPassword(password),"密码格式错误，请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkPassword(confirmPassword),"密码格式错误，请重新输入!");
-        Assert.isTrue(password.equals(confirmPassword),"两次输入的密码不一致,请重新输入!");
-        Assert.isTrue(captcha != null,"验证码不能为空,请重新输入！");
+        Asserts.isTrue(captcha == null,BusinessCodeEnum.SMS_CODE_NOT_EMPTY);
+        Asserts.isTrue(StringUtils.isAnyBlank(userName,phone,password,confirmPassword,channel),BusinessCodeEnum.REQUEST_PARAM_INCOMPLETE);
+        Asserts.isTrue(!FormatCheckUtil.checkMobile(phone),BusinessCodeEnum.PHONE_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkUsername(userName),BusinessCodeEnum.USER_NAME_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkPassword(password),BusinessCodeEnum.PHONE_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkPassword(confirmPassword),BusinessCodeEnum.PHONE_FORMAT_ERROR);
+        Asserts.isTrue(!password.equals(confirmPassword),BusinessCodeEnum.PASSWORD_NOT_EQUAL);
         String code = redisUtils.get(RedisKey.SMS_CODE_CACHE_PREFIX+phone);
-        Assert.isTrue(code != null,"验证码已过期,请重新发送验证码!");
+        Asserts.isTrue(code == null,BusinessCodeEnum.SMS_CODE_NOT_EXIST);
         String[] split = code.split("_");
-        Assert.isTrue(!captcha.equals(split[0]),"验证码有误,请重新输入！");
+        Asserts.isTrue(!captcha.equals(split[0]),BusinessCodeEnum.SMS_CODE_VALIDATE_ERROR);
         Boolean existMobile = this.userService.existMobile(phone);
-        Assert.isTrue(existMobile == null,"手机号已经注册,请重新输入!");
+        Asserts.isTrue(existMobile != null,BusinessCodeEnum.PHONE_EXIST_ERROR);
         Boolean existUserName = this.userService.existUserName(userName);
-        Assert.isTrue(existUserName == null,"用户名已存在,请重新输入!");
+        Asserts.isTrue(existUserName != null,BusinessCodeEnum.USER_NAME_EXIST_ERROR);
         User user = UserAssembler.assembleUser(mobileRegisterParam,md5DigestAsHex);
         this.userService.addUser(user);
     }

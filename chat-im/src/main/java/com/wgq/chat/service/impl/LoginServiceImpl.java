@@ -3,6 +3,9 @@ package com.wgq.chat.service.impl;
 import com.wgq.chat.common.Md5DigestAsHex;
 import com.wgq.chat.common.constant.ExpirationTimeConstants;
 import com.wgq.chat.common.constant.RedisKey;
+import com.wgq.chat.common.enums.BusinessCodeEnum;
+import com.wgq.chat.execption.Asserts;
+import com.wgq.chat.execption.BusinessException;
 import com.wgq.chat.pojo.dto.LoginDTO;
 import com.wgq.chat.pojo.po.User;
 import com.wgq.chat.pojo.query.UserLoginQuery;
@@ -13,7 +16,7 @@ import com.wgq.chat.utils.FormatCheckUtil;
 import com.wgq.chat.utils.JwtUtil;
 import com.wgq.chat.utils.RedisUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
@@ -37,14 +40,15 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public LoginDTO login(UserLoginQuery loginQuery) {
-        Assert.isTrue(loginQuery != null,"参数不能为空,请重新登录!");
-        Assert.isTrue(FormatCheckUtil.checkEmail(loginQuery.getEmail()),"邮箱格式错误，请重新输入!");
-        Assert.isTrue(FormatCheckUtil.checkPassword(loginQuery.getPassword()),"密码格式错误，请重新输入!");
+    public LoginDTO login(UserLoginQuery loginQuery) throws BusinessException {
+        Asserts.isTrue(loginQuery == null, BusinessCodeEnum.PARAM_NOT_EMPTY);
+        Asserts.isTrue(!FormatCheckUtil.checkEmail(loginQuery.getUserName()),BusinessCodeEnum.USER_NAME_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkEmail(loginQuery.getEmail()),BusinessCodeEnum.EMAIL_FORMAT_ERROR);
+        Asserts.isTrue(!FormatCheckUtil.checkPassword(loginQuery.getPassword()),BusinessCodeEnum.PASSWORD_FORMAT_ERROR);
         User user = this.userService.getUserByUserName(loginQuery.getUserName());
-        Assert.isTrue(user!= null,"您输入的账户密码有误,请重新输入!");
+        Asserts.isTrue(user == null,BusinessCodeEnum.USERNAME_PASSWORD_ERROR);
         String userPassword = user.getPassword();
-        Assert.isTrue(md5DigestAsHex.verify(loginQuery.getPassword(),userPassword),"您输入的账户密码有误,请重新输入!");
+        Asserts.isTrue(!md5DigestAsHex.verify(loginQuery.getPassword(),userPassword),BusinessCodeEnum.USERNAME_PASSWORD_ERROR);
         String token = JwtUtil.buildJWT(String.valueOf(user.getUserId()));
         LoginUser loginUser = new LoginUser.LoginUserBuild()
                 .userId(user.getUserId())

@@ -48,7 +48,7 @@ public class NotifyController {
     @GetMapping("/validate-code/{captcha}")
     @ApiOperation("验证图形验证码")
     public boolean validateCode(HttpServletRequest request, HttpServletResponse response,
-                                 @PathVariable String captcha) {
+                                 @PathVariable String captcha) throws BusinessException {
         String captchaKey = CaptchaUtil.getCaptchaKey(request,md5DigestAsHex);
         boolean  verificationResult = notifyService.validateCode(captchaKey,captcha);
         return verificationResult;

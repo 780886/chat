@@ -1,5 +1,6 @@
 package com.wgq.chat.controller;
 
+import com.wgq.chat.execption.BusinessException;
 import com.wgq.chat.pojo.dto.LoginDTO;
 import com.wgq.chat.pojo.param.register.EmailRegisterParam;
 import com.wgq.chat.pojo.param.register.MobileRegisterParam;
@@ -24,20 +25,20 @@ public class RegisterController {
 
     @PostMapping("/user-name-register")
     @ApiOperation(value = "用户名注册用户")
-    public void userNameRegister(@RequestBody UserNameRegisterParam userNameRegisterParam) {
+    public void userNameRegister(@RequestBody UserNameRegisterParam userNameRegisterParam) throws BusinessException {
         registerService.userNameRegister(userNameRegisterParam);
     }
 
     @PostMapping("/email-register")
     @ApiOperation(value = "邮箱注册用户")
-    public LoginDTO emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) {
+    public LoginDTO emailRegister(@RequestBody EmailRegisterParam emailRegisterParam) throws BusinessException {
         LoginDTO loginDTO = registerService.emailRegister(emailRegisterParam);
         return loginDTO;
     }
 
     @PostMapping("/phone-register")
     @ApiOperation(value = "手机号注册用户")
-    public void phoneRegister(@RequestBody MobileRegisterParam mobileRegisterParam) {
+    public void phoneRegister(@RequestBody MobileRegisterParam mobileRegisterParam) throws BusinessException {
         registerService.phoneRegister(mobileRegisterParam);
     }
 

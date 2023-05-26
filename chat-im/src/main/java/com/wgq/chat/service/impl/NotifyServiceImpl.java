@@ -5,6 +5,7 @@ import com.wgq.chat.common.Md5DigestAsHex;
 import com.wgq.chat.common.constant.ExpirationTimeConstants;
 import com.wgq.chat.common.constant.RedisKey;
 import com.wgq.chat.common.enums.BusinessCodeEnum;
+import com.wgq.chat.execption.Asserts;
 import com.wgq.chat.execption.BusinessException;
 import com.wgq.chat.pojo.param.SendCodeParam;
 import com.wgq.chat.service.NotifyService;
@@ -14,7 +15,7 @@ import com.wgq.chat.utils.StringUtils;
 import com.wgq.chat.utils.VerificationCodeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -70,11 +71,11 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public String sendPhoneValidateCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException {
-        Assert.isTrue(sendCodeParam != null, "参数不能为空,请重新输入!");
-        Assert.isTrue(sendCodeParam.getCaptcha() != null, "验证码不能为空,请重新输入验证码!");
+        Asserts.isTrue(sendCodeParam == null, BusinessCodeEnum.PARAM_NOT_EMPTY);
+        Asserts.isTrue(sendCodeParam.getCaptcha() == null, BusinessCodeEnum.SMS_CODE_NOT_EMPTY);
         boolean validateResult = validateCode(captchaKey, sendCodeParam.getCaptcha());
-        Assert.isTrue(validateResult,"验证码不正确,请重新输入!");
-        Assert.isTrue(sendCodeParam.getPhone()!= null, "手机号不能为空");
+        Asserts.isTrue(!validateResult,BusinessCodeEnum.CAPTCHA_CODE_ERROR);
+        Asserts.isTrue(sendCodeParam.getPhone() == null, BusinessCodeEnum.PHONE_NOT_EMPTY);
         //1、接口防刷
         String redisCode = redisUtils.get(RedisKey.SMS_CODE_CACHE_PREFIX+sendCodeParam.getPhone());
         if (!StringUtils.isNullOrEmpty(redisCode)){
@@ -96,9 +97,9 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    public boolean validateCode(String captchaKey, String captcha) {
+    public boolean validateCode(String captchaKey, String captcha) throws BusinessException {
         String redisCaptcha = redisUtils.get(captchaKey);
-        Assert.isTrue(redisCaptcha != null,"验证码已过期,请重新获取!");
+        Asserts.isTrue(redisCaptcha == null,BusinessCodeEnum.CAPTCHA_CODE_NOT_EXIST);
         return redisCaptcha.equals(captcha);
     }
 }

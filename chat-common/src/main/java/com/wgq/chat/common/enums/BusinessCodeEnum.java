@@ -35,8 +35,8 @@ public enum BusinessCodeEnum implements StatusCode {
     EMAIL_EXIST_ERROR(1303, "邮箱已存在，请重新输入!"),
     //用户
     USERNAME_NOT_EMPTY(1401, "用户名不能为空,请重新输入!"),
-    USER_NAME_EXIST_ERROR(1402, "用户名已存在，请重新输入!"),
-    USER_NAME_FORMAT_ERROR(1403, "用户名格式不正确，请重新输入!"),
+    USER_NAME_FORMAT_ERROR(1402, "用户名格式不正确，请重新输入!"),
+    USER_NAME_EXIST_ERROR(1403, "用户名已存在，请重新输入!"),
     //密码
     PASSWORD_NOT_EMPTY(1501, "密码不能为空,请重新输入!"),
     PASSWORD_FORMAT_ERROR(1502, "密码格式不正确,请重新输入!"),

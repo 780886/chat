@@ -13,5 +13,5 @@ public interface NotifyService {
 
     String sendPhoneValidateCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException;
 
-    boolean validateCode(String captchaKey, String captcha);
+    boolean validateCode(String captchaKey, String captcha) throws BusinessException;
 }
