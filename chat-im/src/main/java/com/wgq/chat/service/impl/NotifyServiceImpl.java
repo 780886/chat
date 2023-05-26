@@ -70,8 +70,8 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public String sendPhoneValidateCode(String captchaKey, SendCodeParam sendCodeParam) throws BusinessException {
-        Assert.isTrue(sendCodeParam != null, "参数不能为空,请重新发送验证码");
-        Assert.isTrue(sendCodeParam.getCaptcha() != null, "验证码不能为空");
+        Assert.isTrue(sendCodeParam != null, "参数不能为空,请重新输入!");
+        Assert.isTrue(sendCodeParam.getCaptcha() != null, "验证码不能为空,请重新输入验证码!");
         boolean validateResult = validateCode(captchaKey, sendCodeParam.getCaptcha());
         Assert.isTrue(validateResult,"验证码不正确,请重新输入!");
         Assert.isTrue(sendCodeParam.getPhone()!= null, "手机号不能为空");

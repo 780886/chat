@@ -51,7 +51,7 @@ public class RegisterServiceImpl implements RegisterService {
         String code = redisUtils.get(RedisKey.SMS_CODE_CACHE_PREFIX);
         Assert.isTrue(code != null,"验证码已过期,请重新发送验证码!");
         String[] split = code.split("_");
-        Assert.isTrue(!captcha.equals(split[0]),"验证码有误,请重新输入！");
+        Assert.isTrue(!captcha.equals(split[0]),"验证码不正确,请重新输入！");
         Boolean existUserName = this.userService.existUserName(userName);
         Assert.isTrue(existUserName == null,"用户名已存在,请重新输入!");
         User user = UserAssembler.assembleUser(userNameRegisterParam,md5DigestAsHex);
