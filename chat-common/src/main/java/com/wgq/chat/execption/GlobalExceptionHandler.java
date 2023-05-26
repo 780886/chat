@@ -14,16 +14,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public Result<Object> BusinessExceptionHandler(BusinessException e){
-        e.printStackTrace();
-        log.error("异常类型:{},业务信息:{}", e.getClass(),e.toString());
+        log.error("异常类型:{},业务信息:{},原因:{}", e.getClass(),e.toString(),e);
         return Result.fail(e.getCode(),e.getMessage());
     }
 
 
     @ExceptionHandler(Exception.class)
     public Result<Object> ExceptionHandler(Exception e){
-        e.printStackTrace();
-        log.error("异常类型:{},业务信息:{}", e.getClass(),e.getMessage());
+        log.error("异常类型:{},原因:{}", e.getClass(),e);
         return Result.fail(BusinessCodeEnum.FAILED);
     }
 }

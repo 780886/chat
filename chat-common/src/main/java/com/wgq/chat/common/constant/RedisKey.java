@@ -24,4 +24,9 @@ public class RedisKey {
         return BASE_KEY + format;
     }
 
+    public static void main(String[] args) {
+        String key = getKey(SMS_CODE_CACHE_PREFIX + 1, "%s");
+        System.out.println(key);
+    }
+
 }
