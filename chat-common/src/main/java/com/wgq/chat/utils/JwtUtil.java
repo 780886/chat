@@ -43,7 +43,7 @@ public class JwtUtil {
     /**
      * 默认jwt所面向的分组用户
      */
-    private static final String DEFAULT_SUB = "system";
+    public static final String DEFAULT_SUB = "system";
 
     /**
      * 使用JWT默认方式，生成加解密密钥
@@ -73,8 +73,8 @@ public class JwtUtil {
      * 构建JWT
      *
      * @param alg      jwt 加密算法
-     * @param sub      jwt 面向的用户 userId
-     * @param aud      jwt 接收方  userName
+     * @param sub      jwt 面向的用户
+     * @param aud      jwt 接收方  userId
      * @param tid      jwt 唯一身份标识 deviceId
      * @param iss      jwt 签发者  wgq
      * @param nbf      jwt 生效日期时间
@@ -182,7 +182,9 @@ public class JwtUtil {
         try {
             Claims claims = getClaimsFromToken(token);
             if (claims == null || !claims.getSubject().equals(sub) ||
-                    claims.getExpiration().before(new Date())) return false;
+                    claims.getExpiration().before(new Date())){
+                return false;
+            }
         } catch (ExpiredJwtException e) {
             // 仅仅是token过期异常直接返回false
             return false;
@@ -221,8 +223,8 @@ public class JwtUtil {
 
     public static void main(String[] args) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2023,4,25,0,40,0);
-        String s = JwtUtil.buildJWT("1","wgq","6DE92C67-EC6E-4365-B367-09E6686498A6","admin",calendar.getTime(),ExpirationTimeConstants.THIRTY_MINUTES);
+        calendar.set(2023,4,6,16,50,0);
+        String s = JwtUtil.buildJWT(DEFAULT_SUB,"wgq","6DE92C67-EC6E-4365-B367-09E6686498A6","admin",calendar.getTime(),ExpirationTimeConstants.THIRTY_MINUTES);
         System.out.println("s = " + s);
         Boolean aBoolean = checkJWT(s);
         String jwtID = getJwtID(s);

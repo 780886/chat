@@ -27,8 +27,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String header = request.getHeader(AUTHORIZATION_HEADER);
-        String subject = loginService.getValidSubject(header);
+        String token = request.getHeader(AUTHORIZATION_HEADER);
+        String subject = loginService.getValidSubject(token);
         if (StringUtils.isNullOrEmpty(subject)){
             request.setAttribute(ATTRIBUTE_UID,subject);
         }else {

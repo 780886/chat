@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -36,6 +37,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String getValidSubject(String token) {
+        //TODO 检验分组用户 userId 设备id 是否相同
         return JwtUtil.getJwtID(token);
     }
 
@@ -49,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
         Asserts.isTrue(user == null,BusinessCodeEnum.USERNAME_PASSWORD_ERROR);
         String userPassword = user.getPassword();
         Asserts.isTrue(!md5DigestAsHex.verify(loginQuery.getPassword(),userPassword),BusinessCodeEnum.USERNAME_PASSWORD_ERROR);
-        String token = JwtUtil.buildJWT(String.valueOf(user.getUserId()));
+        String token = JwtUtil.buildJWT(JwtUtil.DEFAULT_SUB,String.valueOf(user.getUserId()),"6DE92C67-EC6E-4365-B367-09E6686498A6","admin",new Date(),ExpirationTimeConstants.THIRTY_MINUTES);
         LoginUser loginUser = new LoginUser.LoginUserBuild()
                 .userId(user.getUserId())
                 .userName(user.getUserName())
