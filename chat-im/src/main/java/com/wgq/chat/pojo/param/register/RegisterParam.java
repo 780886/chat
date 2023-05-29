@@ -1,6 +1,6 @@
 package com.wgq.chat.pojo.param.register;
 
-import com.wgq.chat.pojo.param.Param;
+import com.wgq.chat.protocol.Param;
 
 public abstract class RegisterParam implements Param {
 

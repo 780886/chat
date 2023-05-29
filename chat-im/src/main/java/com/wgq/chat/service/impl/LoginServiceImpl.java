@@ -1,6 +1,6 @@
 package com.wgq.chat.service.impl;
 
-import com.wgq.chat.common.Md5DigestAsHex;
+import com.wgq.chat.common.ChatEncryptionService;
 import com.wgq.chat.common.constant.ExpirationTimeConstants;
 import com.wgq.chat.common.constant.RedisKey;
 import com.wgq.chat.common.enums.BusinessCodeEnum;
@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
     private UserService userService;
 
     @Resource
-    private Md5DigestAsHex md5DigestAsHex;
+    private ChatEncryptionService chatEncryptionService;
 
     @Resource
     private RedisUtils redisUtils;
@@ -48,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
         User user = this.userService.getUserByUserName(loginQuery.getUserName());
         Asserts.isTrue(user == null,BusinessCodeEnum.USERNAME_PASSWORD_ERROR);
         String userPassword = user.getPassword();
-        Asserts.isTrue(!md5DigestAsHex.verify(loginQuery.getPassword(),userPassword),BusinessCodeEnum.USERNAME_PASSWORD_ERROR);
+        Asserts.isTrue(!chatEncryptionService.verify(loginQuery.getPassword(),userPassword),BusinessCodeEnum.USERNAME_PASSWORD_ERROR);
         String token = JwtUtil.buildJWT(String.valueOf(user.getUserId()));
         LoginUser loginUser = new LoginUser.LoginUserBuild()
                 .userId(user.getUserId())

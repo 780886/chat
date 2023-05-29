@@ -2,7 +2,8 @@ package com.wgq.chat.pojo.dto;
 
 
 import com.wgq.chat.pojo.vo.LoginUser;
-import com.wgq.chat.pojo.vo.VO;
+import com.wgq.chat.protocol.VO;
+import com.wgq.chat.protocol.DTO;
 
 public class LoginDTO implements VO, DTO {
 

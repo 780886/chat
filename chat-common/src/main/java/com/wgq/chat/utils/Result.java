@@ -3,13 +3,14 @@ package com.wgq.chat.utils;
 
 import com.wgq.chat.common.enums.BusinessCodeEnum;
 import com.wgq.chat.common.enums.StatusCode;
+import com.wgq.chat.protocol.VO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
 @ApiModel("返回结果对象")
-public class Result<T> {
+public class Result<T> implements VO {
 
     @ApiModelProperty("成功标识")
     private  boolean success; //是否成功

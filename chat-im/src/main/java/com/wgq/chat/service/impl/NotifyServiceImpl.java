@@ -1,7 +1,7 @@
 package com.wgq.chat.service.impl;
 
 import com.google.code.kaptcha.Producer;
-import com.wgq.chat.common.Md5DigestAsHex;
+import com.wgq.chat.common.ChatEncryptionService;
 import com.wgq.chat.common.constant.ExpirationTimeConstants;
 import com.wgq.chat.common.constant.RedisKey;
 import com.wgq.chat.common.enums.BusinessCodeEnum;
@@ -37,12 +37,12 @@ public class NotifyServiceImpl implements NotifyService {
     private Producer captchaProducer;
 
     @Resource
-    private Md5DigestAsHex md5DigestAsHex;
+    private ChatEncryptionService chatEncryptionService;
 
 
     @Override
     public void captcha(HttpServletRequest request, HttpServletResponse response) {
-        String cacheKey = CaptchaUtil.getCaptchaKey(request,md5DigestAsHex);
+        String cacheKey = CaptchaUtil.getCaptchaKey(request, chatEncryptionService);
         String capText = captchaProducer.createText();
         log.info("验证码生成完毕，回显到屏幕上:{}",capText);
         BufferedImage bi = captchaProducer.createImage(capText);

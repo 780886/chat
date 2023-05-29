@@ -29,6 +29,7 @@
         <hutool.version>5.8.18</hutool.version>
         <mybatis-spring-boot-starter.version>2.2.0</mybatis-spring-boot-starter.version>
         <kaptcha-spring-boot-starter.version>1.1.0</kaptcha-spring-boot-starter.version>
+        <fastjson.version>1.2.83</fastjson.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -36,6 +37,11 @@
                 <groupId>com.common</groupId>
                 <artifactId>chat-common</artifactId>
                 <version>${chat-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>

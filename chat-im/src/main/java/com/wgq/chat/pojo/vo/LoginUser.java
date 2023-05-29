@@ -1,10 +1,12 @@
 package com.wgq.chat.pojo.vo;
 
+import com.wgq.chat.protocol.VO;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-public class LoginUser {
+public class LoginUser implements VO {
 
     /**
      * 用户ID
@@ -35,7 +37,6 @@ public class LoginUser {
 
     public static class LoginUserBuild{
        LoginUser loginUser  =  new LoginUser();
-
        public LoginUserBuild userId(Long userId){
            loginUser.userId = userId;
            return this;
@@ -63,6 +64,7 @@ public class LoginUser {
 
         public LoginUserBuild days(Integer days){
             loginUser.days = days;
+            loginUser.expireAt = System.currentTimeMillis() + (long)(days * 24 * 60 * 60 * 1000);
             return this;
         }
 
