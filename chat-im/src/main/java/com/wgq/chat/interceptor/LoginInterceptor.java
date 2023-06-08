@@ -3,6 +3,7 @@ package com.wgq.chat.interceptor;
 import com.wgq.chat.service.LoginService;
 import com.wgq.chat.utils.JwtUtil;
 import com.wgq.chat.utils.StringUtils;
+import io.jsonwebtoken.Claims;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -28,21 +30,15 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader(AUTHORIZATION_HEADER);
-        String subject = loginService.getValidSubject(token);
-        if (StringUtils.isNullOrEmpty(subject)){
-            request.setAttribute(ATTRIBUTE_UID,subject);
+        String aud = loginService.getValidSubject(token);
+        if (StringUtils.isNullOrEmpty(aud)){
+            request.setAttribute(ATTRIBUTE_UID,aud);
+            return true;
         }else {
-            boolean publicURI = isPublicURI(request.getRequestURI());
-            if (!publicURI){
-                return false;
-            }
+            return false;
         }
-        return true;
+
 
     }
 
-    private boolean isPublicURI(String requestURI) {
-        String[] split = requestURI.split("/");
-        return split.length > 2 && "public".equals(split[3]);
-    }
 }

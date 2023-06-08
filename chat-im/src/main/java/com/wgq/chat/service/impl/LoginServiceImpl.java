@@ -15,6 +15,7 @@ import com.wgq.chat.service.UserService;
 import com.wgq.chat.utils.FormatCheckUtil;
 import com.wgq.chat.utils.JwtUtil;
 import com.wgq.chat.utils.RedisUtils;
+import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Service;
 
 

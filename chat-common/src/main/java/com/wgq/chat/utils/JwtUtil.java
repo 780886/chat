@@ -214,7 +214,7 @@ public class JwtUtil {
     public static String getJwtID(String token) {
         try {
             Claims claims = getClaimsFromToken(token);
-            return claims.getId();
+            return claims.getAudience();
         } catch (Exception e) {
             log.warn("JWT验证出错，错误原因：{}", e.getMessage());
             return null;
